@@ -1,0 +1,280 @@
+{
+	"info": {
+		"_postman_id": "880cb0d0-d79a-4d18-be9a-d0c07c457f16",
+		"name": "OTUS-SoNet",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "6415622"
+	},
+	"item": [
+		{
+			"name": "login",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							""
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status test\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"    pm.response.to.be.withBody;\r",
+							"    pm.response.to.be.json;\r",
+							"    pm.response.to.not.be.error;\r",
+							"});\r",
+							"pm.test(\"Body test\", function () {\r",
+							"    pm.response.to.be.ok;\r",
+							"    pm.response.to.have.jsonBody(\"token\");\r",
+							"    const responseJson = pm.response.json();\r",
+							"    pm.response.to.not.have.jsonBody(\"error\");\r",
+							"});\r",
+							"const responseJson = pm.response.json();\r",
+							"pm.collectionVariables.set(\"token\", responseJson.token);"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"id\": \"{{last_user_id}}\",\r\n    \"password\": \"Секретная строка\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:8080/login",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"login"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "userRegister",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status test\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"    pm.response.to.be.withBody;\r",
+							"    pm.response.to.be.json;\r",
+							"    pm.response.to.not.be.error;\r",
+							"});\r",
+							"pm.test(\"Body test\", function () {\r",
+							"    pm.response.to.be.ok;\r",
+							"    pm.response.to.have.jsonBody(\"user_id\");\r",
+							"    const responseJson = pm.response.json();\r",
+							"    pm.response.to.not.have.jsonBody(\"error\");\r",
+							"});\r",
+							"const responseJson = pm.response.json();\r",
+							"pm.collectionVariables.set(\"last_user_id\", responseJson.user_id);"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"first_name\": \"{{$randomFirstName}}\",\r\n  \"second_name\": \"{{$randomWord}}\",\r\n  \"birthdate\": \"2000-01-01\",\r\n  \"biography\": \"{{$randomJobTitle}}\",\r\n  \"city\": \"{{$randomCity}}\",\r\n  \"password\": \"Секретная строка\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:8080/user/register",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"user",
+						"register"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "testTest",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							""
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status test\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"    pm.response.to.be.withBody;\r",
+							"    pm.response.to.be.json;\r",
+							"    pm.response.to.not.be.error;\r",
+							"});\r",
+							"pm.test(\"Body test\", function () {\r",
+							"    pm.response.to.be.ok;\r",
+							"    pm.response.to.have.jsonBody(\"user.id\");\r",
+							"    pm.response.to.not.have.jsonBody(\"error\");\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [
+					{
+						"key": "X-Request-Id",
+						"value": "e04dee76-819b-4377-b11a-3a598bf6bf93",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "http://localhost:8080/test/test",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"test",
+						"test"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "userGetId",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							""
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status test\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"    pm.response.to.be.withBody;\r",
+							"    pm.response.to.be.json;\r",
+							"    pm.response.to.not.be.error;\r",
+							"});\r",
+							"pm.test(\"Body test\", function () {\r",
+							"    pm.response.to.be.ok;\r",
+							"    pm.response.to.have.jsonBody(\"id\");\r",
+							"    pm.response.to.not.have.jsonBody(\"error\");\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "GET",
+				"header": [
+					{
+						"key": "X-Request-Id",
+						"value": "e04dee76-819b-4377-b11a-3a598bf6bf93",
+						"type": "text",
+						"disabled": true
+					}
+				],
+				"url": {
+					"raw": "http://localhost:8080/user/get/{{last_user_id}}",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"user",
+						"get",
+						"{{last_user_id}}"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "token",
+			"value": "",
+			"type": "string"
+		},
+		{
+			"key": "last_user_id",
+			"value": ""
+		}
+	]
+}

@@ -1,0 +1,15 @@
+version: '3.9'
+services:
+  mysql:
+    image: mysql:8
+    ports:
+      - 3306:3306
+    network_mode: "host"
+    volumes:
+      - /mnt/pgdata/mysql8:/var/lib/mysql
+    environment:
+      - MYSQL_ROOT_PASSWORD=roo0faeV!
+      - MYSQL_PASSWORD=password
+      - MYSQL_USER=user
+      - MYSQL_DATABASE=recordings
+      - MYSQL_TCP_PORT=3306
