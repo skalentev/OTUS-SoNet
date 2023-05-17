@@ -18,11 +18,11 @@ func UserRegister(c *gin.Context) {
 		return
 	}
 
-	if birthday, err := time.Parse(time.DateOnly, user.Birthdate); err != nil {
+	if birthday, err := time.Parse("2006-01-02", user.Birthdate); err != nil {
 		c.JSON(400, gin.H{"error": "data error (" + user.Birthdate + ")"})
 		return
 	} else {
-		user.Birthdate = birthday.Format(time.DateOnly)
+		user.Birthdate = birthday.Format("2006-01-02")
 	}
 
 	var password string

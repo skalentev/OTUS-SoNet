@@ -20,7 +20,7 @@ type User struct {
 }
 
 func CalcUserAge(u *User) {
-	birthday, err := time.Parse(time.DateOnly, u.Birthdate)
+	birthday, err := time.Parse("2006-01-02", u.Birthdate)
 	if err == nil {
 		age, _, _, _, _, _ := utils.TimeDiff(birthday, time.Now())
 		u.Age = age
