@@ -6,9 +6,9 @@ services:
       - 3306:3306
     network_mode: "host"
     volumes:
-      - /mnt/pgdata/mysql8:/var/lib/mysql
+      - /var/lib/mysql
     environment:
-      - MYSQL_ROOT_PASSWORD=roo0faeV!
+      - MYSQL_ROOT_PASSWORD=password
       - MYSQL_PASSWORD=password
       - MYSQL_USER=user
       - MYSQL_DATABASE=recordings
