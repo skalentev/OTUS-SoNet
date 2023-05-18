@@ -1,4 +1,4 @@
-module go-auth
+module otus-sonet
 
 go 1.18
 

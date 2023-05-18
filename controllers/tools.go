@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"github.com/gin-gonic/gin"
 	"github.com/google/uuid"
-	"go-auth/models"
+	"otus-sonet/models"
 )
 
 func AuthTest(c *gin.Context) {

@@ -4,9 +4,9 @@ import (
 	"database/sql"
 	"fmt"
 	"github.com/google/uuid"
-	"go-auth/models"
-	"go-auth/utils"
 	"net/http"
+	"otus-sonet/models"
+	"otus-sonet/utils"
 	"strings"
 	"time"
 

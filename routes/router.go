@@ -2,8 +2,8 @@ package routes
 
 import (
 	"github.com/gin-gonic/gin"
-	"go-auth/controllers"
-	"go-auth/middlewares"
+	"otus-sonet/controllers"
+	"otus-sonet/middlewares"
 )
 
 func Route(r *gin.Engine) {

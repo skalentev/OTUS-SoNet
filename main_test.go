@@ -3,9 +3,9 @@ package main
 import (
 	"github.com/gin-gonic/gin"
 	"github.com/stretchr/testify/assert"
-	"go-auth/controllers"
 	"net/http"
 	"net/http/httptest"
+	"otus-sonet/controllers"
 	"testing"
 )
 

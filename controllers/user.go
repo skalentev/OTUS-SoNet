@@ -5,8 +5,8 @@ import (
 	"fmt"
 	"github.com/gin-gonic/gin"
 	"github.com/google/uuid"
-	"go-auth/models"
-	"go-auth/utils"
+	"otus-sonet/models"
+	"otus-sonet/utils"
 	"time"
 )
 

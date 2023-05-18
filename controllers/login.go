@@ -3,8 +3,8 @@ package controllers
 import (
 	"database/sql"
 	"github.com/gin-gonic/gin"
-	"go-auth/models"
-	"go-auth/utils"
+	"otus-sonet/models"
+	"otus-sonet/utils"
 	"time"
 )
 

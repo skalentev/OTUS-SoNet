@@ -2,8 +2,8 @@ package main
 
 import (
 	"github.com/gin-gonic/gin"
-	"go-auth/models"
-	"go-auth/routes"
+	"otus-sonet/models"
+	"otus-sonet/routes"
 )
 
 func main() {

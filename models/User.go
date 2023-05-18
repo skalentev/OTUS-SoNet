@@ -1,7 +1,7 @@
 package models
 
 import (
-	"go-auth/utils"
+	"otus-sonet/utils"
 	"time"
 )
 
