@@ -3,7 +3,7 @@
 Прототип социальной сети для обучения по курсу Highload Architect
 
 ## Требования к ПО
-- Go v1.16 or higher
+- Go v1.18 or higher
 - MySQL
 - Docker
 - Git
