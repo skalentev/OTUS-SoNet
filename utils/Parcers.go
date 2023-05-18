@@ -2,6 +2,7 @@ package utils
 
 import (
 	"github.com/gin-gonic/gin"
+	"strconv"
 	"time"
 )
 
@@ -13,6 +14,10 @@ func GetRequestId(c *gin.Context) string {
 	return ""
 }
 
+func Code500(c *gin.Context, message string, code int) {
+	c.Header("Retry-After", strconv.Itoa(60))
+	c.JSON(500, gin.H{"message": message, "request_id": GetRequestId(c), "code": code})
+}
 func TimeDiff(a, b time.Time) (year, month, day, hour, min, sec int) {
 	if a.Location() != b.Location() {
 		b = b.In(a.Location())

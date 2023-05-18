@@ -13,7 +13,7 @@ func Login(c *gin.Context) {
 	var user models.User
 
 	if err := c.ShouldBindJSON(&user); err != nil {
-		c.JSON(400, gin.H{})
+		c.AbortWithStatus(400)
 		return
 	}
 
@@ -21,17 +21,17 @@ func Login(c *gin.Context) {
 
 	if err := models.DB.QueryRow("SELECT password from user WHERE id = ? LIMIT 1", user.Id).Scan(&password); err != nil {
 		if err == sql.ErrNoRows {
-			c.JSON(404, gin.H{})
+			c.AbortWithStatus(404)
 			return
 		} else {
-			c.JSON(500, gin.H{"message": "service unavailable", "request_id": utils.GetRequestId(c), "code": -1})
+			utils.Code500(c, "Service unavailable", -1)
 			return
 		}
 	}
 
 	errHash := utils.CompareHashPassword(user.Password, password)
 	if !errHash {
-		c.JSON(400, gin.H{})
+		c.AbortWithStatus(404)
 		return
 	}
 
@@ -41,20 +41,9 @@ func Login(c *gin.Context) {
 	_, err := models.DB.Exec("INSERT INTO session SET token = ?, `user_id` = ?, `token_till` = ? ",
 		token, user.Id, tokenTime)
 	if err != nil {
-		c.JSON(500, gin.H{"message": "could not save session", "request_id": utils.GetRequestId(c), "code": -2})
+		utils.Code500(c, "Could not save session", -2)
 		return
 	}
 
-	//if err != nil {
-	//	c.JSON(500, gin.H{"error": "could not generate token"})
-	//	return
-	//}
-
-	//	c.SetCookie("token", tokenString, int(expirationTime.Unix()), "/", "localhost", false, true)
 	c.JSON(200, gin.H{"token": token})
-}
-
-func Home(c *gin.Context) {
-
-	c.JSON(200, gin.H{"success": "home page", "requestId": utils.GetRequestId(c)})
 }

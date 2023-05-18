@@ -1,26 +1,24 @@
 package controllers
 
 import (
-	"fmt"
 	"github.com/gin-gonic/gin"
 	"github.com/google/uuid"
 	"otus-sonet/models"
+	"otus-sonet/utils"
 )
 
 func AuthTest(c *gin.Context) {
 
 	val, exists := c.Get("user")
 	if !exists {
-		c.JSON(401, gin.H{"error": "unauthorized"})
+		c.AbortWithStatus(401)
 		return
 	}
 
 	var user models.User = val.(models.User)
 
-	fmt.Println("user:", user)
-
 	if _, err := uuid.Parse(user.Id); err != nil {
-		c.JSON(401, gin.H{"error": "unauthorized"})
+		c.AbortWithStatus(401)
 		return
 	}
 
@@ -29,4 +27,8 @@ func AuthTest(c *gin.Context) {
 
 func Health(c *gin.Context) {
 	c.JSON(200, gin.H{"status": "OK"})
+}
+
+func NoRoute(c *gin.Context) {
+	c.JSON(404, gin.H{"message": "no route or wrong method, try GET /user/get/{id}", "requestId": utils.GetRequestId(c), "code": 0})
 }

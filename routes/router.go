@@ -22,4 +22,7 @@ func Route(r *gin.Engine) {
 		authorized.GET("/test", controllers.AuthTest)
 	}
 
+	r.NoMethod(controllers.NoRoute)
+	r.NoRoute(controllers.NoRoute)
+
 }

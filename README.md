@@ -23,9 +23,8 @@
 git clone https://github.com/skalentev/OTUS-SoNet
 ```
 3. Перейти в папку с бинарником
-<code>
-cd OTUS-SoNet/bin
-</code>
+   <code>cd OTUS-SoNet/bin</code>
+
 4. в .env указать параметры подключекния к БД MySQL
 5. Запуск
 <code>./otus-sonet.exe</code>
@@ -33,6 +32,7 @@ cd OTUS-SoNet/bin
 
 
 ## Запуск в Ubuntu
+```bash
 sudo apt install golang-go
 git clone https://github.com/skalentev/OTUS-SoNet
 cd OTUS-SoNet/
@@ -40,7 +40,7 @@ sudo docker compose up -d
 go mod tidy
 go test .
 go run .
-
+```
 
 
 
