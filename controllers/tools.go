@@ -7,7 +7,7 @@ import (
 	"go-auth/models"
 )
 
-func Test(c *gin.Context) {
+func AuthTest(c *gin.Context) {
 
 	val, exists := c.Get("user")
 	if !exists {
@@ -25,4 +25,8 @@ func Test(c *gin.Context) {
 	}
 
 	c.JSON(200, gin.H{"user": user})
+}
+
+func Health(c *gin.Context) {
+	c.JSON(200, gin.H{"status": "OK"})
 }

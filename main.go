@@ -9,6 +9,10 @@ import (
 func main() {
 	// Create a new gin instance
 	r := gin.Default()
+	r.ForwardedByClientIP = true
+	if err := r.SetTrustedProxies([]string{"10.0.0.0/8", "100.64.0.0/10", "172.16.0.0/12", "192.168.0.0/16", "127.0.0.1"}); err != nil {
+		panic(err)
+	}
 
 	// Load .env file
 	dbConfig := models.InitConfig()
@@ -21,8 +25,7 @@ func main() {
 	routes.Route(r)
 
 	// Run the server
-	err := r.Run(":8080")
-	if err != nil {
+	if err := r.Run(":8080"); err != nil {
 		panic(err)
 	}
 
