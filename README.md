@@ -8,6 +8,7 @@
 * /user/get/{id}
 * /test/test
 * /health
+* /metrics
 
 Используйте [POSTMAN коллекцию](https://github.com/skalentev/OTUS-SoNet/blob/main/OTUS-SoNet.postman_collection.json) для тестирования
 
@@ -70,4 +71,16 @@ go test .
 go build -o bin .
 ```
 
-
+## Загрузка тестовых данных
+В MySQL клиенте необходимо выполнить команды:
+```sql
+ SET GLOBAL local_infile=1;
+ USE test1; 
+ LOAD DATA LOCAL INFILE "/var/lib/mysql-files/people.csv" 
+     INTO TABLE user 
+     COLUMNS TERMINATED BY ',' 
+     LINES TERMINATED BY '\n' 
+     IGNORE 1 LINES 
+     (second_name, first_name, @age, city) 
+     SET id = UUID(), birthdate = date_sub(current_date(),INTERVAL @age YEAR);
+```

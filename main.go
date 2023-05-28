@@ -14,6 +14,9 @@ func main() {
 		panic(err)
 	}
 
+	p := models.NewPrometheus("http")
+	p.Use(r)
+
 	// Load .env file
 	dbConfig := models.InitConfig()
 
