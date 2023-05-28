@@ -1,7 +1,11 @@
 version: '3.9'
 services:
   sonet:
+    container_name: sonet
     image: sonet:latest
+    restart: always
+    volumes:
+      - ./.env:/app/.env
     ports:
       - 8080:8080
 
