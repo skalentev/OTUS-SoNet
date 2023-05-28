@@ -1,8 +1,8 @@
 package models
 
 import (
+	"fmt"
 	"github.com/joho/godotenv"
-	"log"
 	"os"
 )
 
@@ -20,7 +20,7 @@ func InitConfig() Config {
 	err := godotenv.Load()
 	if err != nil {
 		if os.Getenv("DB_NAME") == "" {
-			log.Fatal("Error loading conf! Create .env file or export os Environments")
+			fmt.Println("Error loading conf! Create .env file or export os Environments")
 		}
 	}
 
