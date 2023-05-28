@@ -6,14 +6,14 @@ FROM golang:1.19 AS build-stage
 
 WORKDIR /app
 
-COPY go.mod go.sum ./
+COPY ../go.mod go.sum ./
 RUN go mod download
 
-COPY controllers/ ./controllers/
-COPY middlewares/ ./middlewares/
-COPY models/ ./models/
-COPY routes/ ./routes/
-COPY utils/ ./utils/
+COPY ../controllers ./controllers/
+COPY ../middlewares ./middlewares/
+COPY ../models ./models/
+COPY ../routes ./routes/
+COPY ../utils ./utils/
 COPY *.go ./
 
 RUN CGO_ENABLED=0 GOOS=linux go build -o main .
