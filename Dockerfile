@@ -9,7 +9,11 @@ WORKDIR /app
 COPY go.mod go.sum ./
 RUN go mod download
 
-COPY controllers middlewares models routes utils ./
+COPY controllers/ ./controllers/
+COPY middlewares/ ./middlewares/
+COPY models/ ./models/
+COPY routes/ ./routes/
+COPY utils/ ./utils/
 COPY *.go ./
 
 RUN CGO_ENABLED=0 GOOS=linux go build -o main .
