@@ -8,7 +8,8 @@ import (
 
 func main() {
 	// Create a new gin instance
-	r := gin.Default()
+	//r := gin.Default()
+	r := gin.New()
 	r.ForwardedByClientIP = true
 	if err := r.SetTrustedProxies([]string{"10.0.0.0/8", "100.64.0.0/10", "172.16.0.0/12", "192.168.0.0/16", "127.0.0.1"}); err != nil {
 		panic(err)
