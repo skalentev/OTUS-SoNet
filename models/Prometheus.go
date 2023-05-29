@@ -36,6 +36,15 @@ var reqSum = &Metric{
 	Objectives:  map[float64]float64{0.5: 0.05, 0.9: 0.09, 0.99: 0.099},
 }
 
+var dbSum = &Metric{
+	ID:          "dbSum",
+	Name:        "database_processing_time_summary_ms",
+	Description: "database_processing_time_summary_ms of HTTP requests processed",
+	Type:        "summary_vec",
+	Args:        []string{"operation", "table", "target"},
+	Objectives:  map[float64]float64{0.5: 0.05, 0.9: 0.09, 0.99: 0.099},
+}
+
 var reqHis = &Metric{
 	ID:          "reqHis",
 	Name:        "request_processing_time_histogram_ms",
@@ -44,9 +53,12 @@ var reqHis = &Metric{
 	Args:        []string{"method", "status", "url"},
 }
 
+var Prom *Prometheus
+
 type Prometheus struct {
 	reqCnt        *prometheus.CounterVec
 	timeSummary   *prometheus.SummaryVec
+	DbTimeSummary *prometheus.SummaryVec
 	timeHistogram *prometheus.HistogramVec
 	router        *gin.Engine
 	Metric        *Metric
@@ -83,6 +95,15 @@ func (p *Prometheus) registerMetrics(subsystem string) {
 	)
 	p.timeSummary = timeSum
 	reqSum.MetricCollector = timeSum
+	dbTimeSum := prometheus.NewSummaryVec(
+		prometheus.SummaryOpts{
+			Name:       dbSum.Name,
+			Objectives: dbSum.Objectives,
+		},
+		dbSum.Args,
+	)
+	p.DbTimeSummary = dbTimeSum
+	dbSum.MetricCollector = dbTimeSum
 
 	timeHistogram := prometheus.NewHistogramVec(
 		prometheus.HistogramOpts{
@@ -96,6 +117,7 @@ func (p *Prometheus) registerMetrics(subsystem string) {
 
 	prometheus.MustRegister(metric)
 	prometheus.MustRegister(timeSum)
+	prometheus.MustRegister(dbTimeSum)
 	prometheus.MustRegister(timeHistogram)
 	//prometheus.Unregister(collectors.NewGoCollector())
 }

@@ -15,8 +15,8 @@ func main() {
 		panic(err)
 	}
 
-	p := models.NewPrometheus("http")
-	p.Use(r)
+	models.Prom = models.NewPrometheus("http")
+	models.Prom.Use(r)
 
 	// Load .env file
 	dbConfig := models.InitConfig()
