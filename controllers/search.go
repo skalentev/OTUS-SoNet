@@ -34,6 +34,8 @@ func UserSearch(c *gin.Context) {
 	}
 	defer rows.Close()
 	models.Prom.DbTimeSummary.WithLabelValues("select", "userSearch", "query").Observe(float64(time.Since(start).Milliseconds()))
+	models.Prom.DbTimeGauge.WithLabelValues("select", "userSearch", "query").Set(float64(time.Since(start).Milliseconds()))
+
 	var users []models.User
 
 	for rows.Next() {
