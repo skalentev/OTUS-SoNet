@@ -27,9 +27,9 @@ func InitDB(cfg Config) {
 	if err != nil {
 		panic(err)
 	}
-	db.SetConnMaxLifetime(time.Minute * 3)
-	db.SetMaxOpenConns(1000)
-	db.SetMaxIdleConns(1000)
+	db.SetConnMaxLifetime(time.Minute * 1)
+	db.SetMaxOpenConns(100)
+	db.SetMaxIdleConns(100)
 
 	pingErr := db.Ping()
 	if pingErr != nil {

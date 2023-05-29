@@ -26,7 +26,7 @@ func UserSearch(c *gin.Context) {
 
 	start := time.Now()
 
-	rows, err := models.DB.Query("SELECT u.id, u.first_name, u.second_name, u.birthdate, COALESCE(u.biography,'-') as biography, u.city from user u WHERE u.first_name LIKE ? AND u.second_name LIKE ? ORDER BY u.id LIMIT 100",
+	rows, err := models.DB.Query("SELECT u.id, u.first_name, u.second_name, u.birthdate, COALESCE(u.biography,'-') as biography, u.city from user u WHERE u.first_name LIKE ? AND u.second_name LIKE ? ORDER BY u.id ",
 		firstName+"%", lastName+"%")
 	if err != nil {
 		utils.Code500(c, "Query error", -7)
