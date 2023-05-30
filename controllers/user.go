@@ -60,6 +60,7 @@ func UserGetId(c *gin.Context) {
 		return
 	}
 
+	start := time.Now()
 	var user models.User
 	if err := models.DB.QueryRow("SELECT u.id, u.first_name, u.second_name, u.birthdate, u.biography, u.city from user u WHERE u.id = ? LIMIT 1",
 		id).Scan(&user.Id, &user.FirstName, &user.SecondName, &user.Birthdate, &user.Biography, &user.City); err != nil {
@@ -72,6 +73,8 @@ func UserGetId(c *gin.Context) {
 			return
 		}
 	}
+	models.Prom.DbTimeSummary.WithLabelValues("select", "userGetId", "query").Observe(float64(time.Since(start).Milliseconds()))
+	models.Prom.DbTimeGauge.WithLabelValues("select", "userGetId", "query").Set(float64(time.Since(start).Milliseconds()))
 	models.CalcUserAge(&user)
 
 	fmt.Println("user:", user)
