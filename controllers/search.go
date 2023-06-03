@@ -56,7 +56,7 @@ func UserSearch(c *gin.Context) {
 	}
 	models.Prom.DbTimeSummary.WithLabelValues("select", "userSearch", "rows").Observe(float64(time.Since(start).Milliseconds()))
 	if err = rows.Err(); err != nil {
-		utils.Code500(c, "DB error", -9)
+		utils.Code500(c, "Metrics error", -9)
 		return
 	}
 
