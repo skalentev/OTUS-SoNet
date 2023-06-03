@@ -6,6 +6,7 @@
 * /login
 * /user/register
 * /user/get/{id}
+* /user/search
 * /test/test
 * /health
 * /metrics
@@ -43,7 +44,14 @@ go test .
 go run .
 ```
 
-
+## Release Update
+```bash
+git pull
+sudo docker build --no-cache -t sonet .
+sudo docker compose down
+sudo docker compose up -d
+sudo docker logs -f sonet
+```
 
 
 ## Поднять MySQL в докере
