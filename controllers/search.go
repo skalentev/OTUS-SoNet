@@ -36,6 +36,7 @@ func UserSearch(c *gin.Context) {
 		firstName+"%", lastName+"%")
 	if err != nil {
 		utils.Code500(c, "Query error", -7)
+		fmt.Println("DBErr:", err)
 		return
 	}
 	defer rows.Close()
