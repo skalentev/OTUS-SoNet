@@ -17,9 +17,9 @@ restart:
 	docker-compose -f docker-compose.yml stop $(c)
 	docker-compose -f docker-compose.yml up -d $(c)
 logs:
-	docker-compose -f docker-compose.yml logs --tail=100 -f $(c)
+	sudo docker compose -f docker-compose.yml logs --tail=100 -f sonet
 update:
-	git pull
+	git pull --no-edit
 	sudo docker build --no-cache -t sonet .
 	sudo docker compose down
 	sudo docker compose up -d
