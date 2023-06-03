@@ -1,7 +1,11 @@
-THIS_FILE := $(lastword $(MAKEFILE_LIST))
-.PHONY: help build up start down destroy stop restart logs logs-api ps login-timescale login-api db-shell
-help:
-        make -pRrq  -f $(THIS_FILE) : 2>/dev/null | awk -v RS= -F: '/^# File/,/^# Finished Make data base/ {if ($$1 !~ "^[#.]") {print $$1}}' | sort | egrep -v -e '^[^[:alnum:]]' -e '^$@$$'
+# Definitions
+ROOT                    := $(PWD)
+GO_HTML_COV             := ./coverage.html
+GO_TEST_OUTFILE         := ./c.out
+GOLANG_DOCKER_IMAGE     := golang:1.15
+GOLANG_DOCKER_CONTAINER := goesquerydsl-container
+#help:
+#       make -pRrq  -f $(THIS_FILE) : 2>/dev/null | awk -v RS= -F: '/^# File/,/^# Finished Make data base/ {if ($$1 !~ "^[#.]") {print $$1}}' | sort | egrep -v -e '^[^[\:alnum\:]]' -e '^$@$$'
 build:
         docker-compose -f docker-compose.yml build --no-cache -t sonet .
 up:
