@@ -25,16 +25,6 @@ func UserRegister(c *gin.Context) {
 		user.Birthdate = birthday.Format("2006-01-02")
 	}
 
-	var password string
-	if err := models.DB.QueryRow("SELECT password from user WHERE id = ? LIMIT 1", user.Id).Scan(&password); err == nil {
-		c.AbortWithStatus(400)
-		fmt.Println("user already exists")
-		return
-	} else if err != sql.ErrNoRows {
-		utils.Code500(c, "service unavailable", -3)
-		return
-	}
-
 	var errHash error
 	user.Password, errHash = utils.GenerateHashPassword(user.Password)
 	if errHash != nil {
@@ -42,10 +32,18 @@ func UserRegister(c *gin.Context) {
 		return
 	}
 	user.Id = utils.GenerateToken()
-	_, err := models.DB.Exec("INSERT INTO user SET id = ?, `first_name` = ?, `second_name` = ?, `birthdate` = ?, "+
-		"`city` = ?, `biography` = ?, `password` = ? ",
+
+	var query string
+	switch models.Driver {
+	case "mysql":
+		query = "INSERT INTO user SET id = ?, `first_name` = ?, `second_name` = ?, `birthdate` = ?, `city` = ?, `biography` = ?, `password` = ? "
+	default:
+		query = "INSERT INTO public.user ( id, first_name, second_name, birthdate, city, biography, password) VALUES ($1, $2, $3, $4, $5, $6, $7)"
+	}
+	_, err := models.DB.Exec(query,
 		user.Id, user.FirstName, user.SecondName, user.Birthdate, user.City, user.Biography, user.Password)
 	if err != nil {
+		fmt.Println(query)
 		utils.Code500(c, err.Error(), -5)
 		return
 	}
@@ -62,9 +60,17 @@ func UserGetId(c *gin.Context) {
 
 	start := time.Now()
 	var user models.User
-	if err := models.DB.QueryRow("SELECT u.id, u.first_name, u.second_name, u.birthdate, u.biography, u.city from user u WHERE u.id = ? LIMIT 1",
+	var query string
+	switch models.Driver {
+	case "mysql":
+		query = "SELECT u.id, u.first_name, u.second_name, u.birthdate, u.biography, u.city from user u WHERE u.id = ? LIMIT 1"
+	default:
+		query = "SELECT id, first_name, second_name, birthdate, biography, city from public.user WHERE id = $1 limit 1"
+	}
+	if err := models.DB.QueryRow(query,
 		id).Scan(&user.Id, &user.FirstName, &user.SecondName, &user.Birthdate, &user.Biography, &user.City); err != nil {
 		if err == sql.ErrNoRows {
+			fmt.Println(query)
 			c.AbortWithStatus(404)
 			return
 		} else {

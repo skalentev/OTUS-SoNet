@@ -9,5 +9,12 @@
       <jdbc-url>jdbc:mysql://192.168.88.203:3306/recordings</jdbc-url>
       <working-dir>$ProjectFileDir$</working-dir>
     </data-source>
+    <data-source source="LOCAL" name="goauth@192.168.88.203" uuid="0e96b99c-d760-4d07-87c1-9e58b2ebfef6">
+      <driver-ref>postgresql</driver-ref>
+      <synchronize>true</synchronize>
+      <jdbc-driver>org.postgresql.Driver</jdbc-driver>
+      <jdbc-url>jdbc:postgresql://192.168.88.203:5432/goauth</jdbc-url>
+      <working-dir>$ProjectFileDir$</working-dir>
+    </data-source>
   </component>
 </project>

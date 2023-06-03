@@ -72,7 +72,13 @@ go build -o bin .
 ```
 
 ## Загрузка тестовых данных
-В MySQL клиенте необходимо выполнить команды:
+### MySQL:
+в файле people.csv через notepad++ произвести замены:
+```bash
+"^(\w+) (\w+)" => "\2,\1"
+```
+
+В клиенте необходимо выполнить команды:
 ```sql
  SET GLOBAL local_infile=1;
  USE test1; 
@@ -81,6 +87,27 @@ go build -o bin .
      COLUMNS TERMINATED BY ',' 
      LINES TERMINATED BY '\n' 
      IGNORE 1 LINES 
-     (second_name, first_name, @age, city) 
+     (first_name, second_name @age, city) 
      SET id = UUID(), birthdate = date_sub(current_date(),INTERVAL @age YEAR);
 ```
+### PostgreSQL:
+в файле people.csv через notepad++ произвести замены:
+```bash
+"^(\w+) (\w+)" => "\2,\1"
+```
+В PostgreSQL необходимо добавить
+```sql
+CREATE EXTENSION IF NOT EXISTS "uuid-ossp";
+ALTER TABLE user ALTER COLUMN id SET DEFAULT uuid_generate_v4();
+```
+
+```sql
+copy public.user (first_name, second_name, birthdate, city) 
+    FROM 'people_pg.csv' 
+    DELIMITER ',' 
+    CSV HEADER ENCODING 'UTF8';
+
+UPDATE public.user u SET  birthdate = date(current_timestamp) - (INTERVAL '1y')*to_number(u.birthdate,'999');
+
+```
+

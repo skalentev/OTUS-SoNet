@@ -18,8 +18,14 @@ func Login(c *gin.Context) {
 	}
 
 	var password string
-
-	if err := models.DB.QueryRow("SELECT password from user WHERE id = ? LIMIT 1", user.Id).Scan(&password); err != nil {
+	var query string
+	switch models.Driver {
+	case "mysql":
+		query = "SELECT password from user WHERE id = ? LIMIT 1"
+	default:
+		query = "SELECT password from public.user WHERE id = $1 limit 1"
+	}
+	if err := models.DB.QueryRow(query, user.Id).Scan(&password); err != nil {
 		if err == sql.ErrNoRows {
 			c.AbortWithStatus(404)
 			return
@@ -37,11 +43,15 @@ func Login(c *gin.Context) {
 
 	tokenTime := time.Now().Add(5 * time.Minute)
 	token := utils.GenerateToken()
-
-	_, err := models.DB.Exec("INSERT INTO session SET token = ?, `user_id` = ?, `token_till` = ? ",
-		token, user.Id, tokenTime)
+	switch models.Driver {
+	case "mysql":
+		query = "INSERT INTO session SET token = ?, `user_id` = ?, `token_till` = ? "
+	default:
+		query = "INSERT INTO public.session ( token, user_id, token_till) VALUES ($1, $2, $3)"
+	}
+	_, err := models.DB.Exec(query, token, user.Id, tokenTime)
 	if err != nil {
-		utils.Code500(c, "Could not save session", -2)
+		utils.Code500(c, "Could not save session: "+err.Error(), -2)
 		return
 	}
 

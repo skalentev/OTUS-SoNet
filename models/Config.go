@@ -7,6 +7,7 @@ import (
 )
 
 type Config struct {
+	Driver   string
 	Host     string
 	Port     string
 	User     string
@@ -25,6 +26,7 @@ func InitConfig() Config {
 	}
 
 	return Config{
+		Driver:   os.Getenv("DB_DRIVER"),
 		Host:     os.Getenv("DB_HOST"),
 		Port:     os.Getenv("DB_PORT"),
 		User:     os.Getenv("DB_USER"),

@@ -39,7 +39,15 @@ func AuthRequired() gin.HandlerFunc {
 		}
 
 		var user models.User
-		if err := models.DB.QueryRow("SELECT u.id, u.first_name, u.second_name, u.birthdate, u.biography, u.city from session s, user u WHERE s.token = ? AND s.token_till>? AND u.id=s.user_id LIMIT 1",
+
+		var query string
+		switch models.Driver {
+		case "mysql":
+			query = "SELECT u.id, u.first_name, u.second_name, u.birthdate, u.biography, u.city from session s, user u WHERE s.token = ? AND s.token_till>? AND u.id=s.user_id LIMIT 1"
+		default:
+			query = "SELECT u.id, u.first_name, u.second_name, u.birthdate, u.biography, u.city from public.session s, public.user u WHERE s.token = $1 AND s.token_till>$2 AND u.id=s.user_id limit 1"
+		}
+		if err := models.DB.QueryRow(query,
 			headerParts[1], time.Now()).Scan(&user.Id, &user.FirstName, &user.SecondName, &user.Birthdate, &user.Biography, &user.City); err != nil {
 			if err == sql.ErrNoRows {
 				c.JSON(404, gin.H{})
