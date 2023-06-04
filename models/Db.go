@@ -2,11 +2,11 @@ package models
 
 import (
 	"database/sql"
+	"errors"
 	"fmt"
 	_ "github.com/go-sql-driver/mysql"
 	//	_ "github.com/jackc/pgx"
 	_ "github.com/lib/pq"
-	"log"
 	"time"
 	//	"gorm.io/driver/postgres"
 	//	"gorm.io/gorm"
@@ -14,47 +14,49 @@ import (
 
 // var DB *gorm.DB
 
-var DB *sql.DB
-var Driver string
+type Db struct {
+	DB        *sql.DB
+	Driver    string
+	lastQuery string
+}
 
-func InitDB(cfg Config) {
+var DB = &Db{}
+var DBRO = &Db{}
 
+func (d *Db) Init(cfg DBConfig) error {
 	var (
 		err error
-		db  *sql.DB
 		dsn string
 	)
 	//	dsn := fmt.Sprintf("host=%s user=%s password=%s dbname=%s port=%s sslmode=%s", cfg.Host, cfg.User, cfg.Password, cfg.DBName, cfg.Port, cfg.SSLMode)
 	//	db, err = gorm.Open(postgres.Open(dsn), &gorm.Config{})
 
-	Driver = cfg.Driver
-	switch Driver {
+	d.Driver = cfg.Driver
+	switch d.Driver {
 	case "mysql":
 		dsn = fmt.Sprintf("%s:%s@tcp(%s:%s)/%s?interpolateParams=true", cfg.User, cfg.Password, cfg.Host, cfg.Port, cfg.DBName)
 	case "postgres":
 		dsn = fmt.Sprintf("host=%s user=%s password=%s dbname=%s port=%s sslmode=%s", cfg.Host, cfg.User, cfg.Password, cfg.DBName, cfg.Port, cfg.SSLMode)
 	default:
-		panic("Cannot open DB: set .env Driver value as mysql or postgres")
+		return errors.New("cannot open DB")
 	}
-	db, err = sql.Open(Driver, dsn)
-
+	d.DB, err = sql.Open(d.Driver, dsn)
 	if err != nil {
-		panic(err)
+		return err
 	}
-	db.SetConnMaxLifetime(time.Minute * 1)
-	db.SetMaxOpenConns(50)
-	db.SetMaxIdleConns(10)
+	d.DB.SetConnMaxLifetime(time.Minute * 1)
+	d.DB.SetMaxOpenConns(50)
+	d.DB.SetMaxIdleConns(10)
 
-	pingErr := db.Ping()
+	pingErr := d.DB.Ping()
 	if pingErr != nil {
-		log.Fatal(pingErr)
+		return pingErr
 	}
-	fmt.Println("DB Connected!")
+	//	fmt.Println("DB Connected!")
 
-	var initScript string
-	switch Driver {
+	switch d.Driver {
 	case "mysql":
-		initScript = `
+		d.lastQuery = `
 			CREATE TABLE IF NOT EXISTS user (
 				id VARCHAR(64) NOT NULL,
 				created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
@@ -70,7 +72,7 @@ func InitDB(cfg Config) {
 			)  ;
 		`
 	default:
-		initScript = `
+		d.lastQuery = `
 			CREATE TABLE IF NOT EXISTS public.user
 			(
 				id VARCHAR(64) NOT NULL,
@@ -87,14 +89,14 @@ func InitDB(cfg Config) {
 		`
 	}
 
-	_, err = db.Exec(initScript)
+	_, err = d.DB.Exec(d.lastQuery)
 	if err != nil {
-		panic(err)
+		return err
 	}
 
-	switch Driver {
+	switch d.Driver {
 	case "mysql":
-		initScript = `
+		d.lastQuery = `
 			CREATE TABLE IF NOT EXISTS session (
 				token VARCHAR(64) NOT NULL PRIMARY KEY,
 				user_id VARCHAR(64) NOT NULL,
@@ -106,7 +108,7 @@ func InitDB(cfg Config) {
 			) ENGINE=InnoDB
 		`
 	default:
-		initScript = `
+		d.lastQuery = `
 			CREATE TABLE IF NOT EXISTS public.session
 			(
 				token VARCHAR(64) NOT NULL,
@@ -119,18 +121,14 @@ func InitDB(cfg Config) {
 			`
 	}
 
-	_, err = db.Exec(initScript)
+	_, err = d.DB.Exec(d.lastQuery)
 	if err != nil {
-		panic(err)
+		return err
 	}
-	fmt.Println("DB Initialized!")
 
-	DB = db
+	return nil
 }
 
-func CloseDB() {
-	err := DB.Close()
-	if err != nil {
-		panic(err)
-	}
+func (d *Db) Close() error {
+	return d.DB.Close()
 }

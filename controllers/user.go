@@ -34,13 +34,13 @@ func UserRegister(c *gin.Context) {
 	user.Id = utils.GenerateToken()
 
 	var query string
-	switch models.Driver {
+	switch models.DB.Driver {
 	case "mysql":
 		query = "INSERT INTO user SET id = ?, `first_name` = ?, `second_name` = ?, `birthdate` = ?, `city` = ?, `biography` = ?, `password` = ? "
 	default:
 		query = "INSERT INTO public.user ( id, first_name, second_name, birthdate, city, biography, password) VALUES ($1, $2, $3, $4, $5, $6, $7)"
 	}
-	_, err := models.DB.Exec(query,
+	_, err := models.DB.DB.Exec(query,
 		user.Id, user.FirstName, user.SecondName, user.Birthdate, user.City, user.Biography, user.Password)
 	if err != nil {
 		fmt.Println(query)
@@ -61,13 +61,13 @@ func UserGetId(c *gin.Context) {
 	start := time.Now()
 	var user models.User
 	var query string
-	switch models.Driver {
+	switch models.DBRO.Driver {
 	case "mysql":
 		query = "SELECT u.id, u.first_name, u.second_name, u.birthdate, u.biography, u.city from user u WHERE u.id = ? LIMIT 1"
 	default:
 		query = "SELECT id, first_name, second_name, birthdate, biography, city from public.user WHERE id = $1 limit 1"
 	}
-	if err := models.DB.QueryRow(query,
+	if err := models.DBRO.DB.QueryRow(query,
 		id).Scan(&user.Id, &user.FirstName, &user.SecondName, &user.Birthdate, &user.Biography, &user.City); err != nil {
 		if err == sql.ErrNoRows {
 			fmt.Println(query)

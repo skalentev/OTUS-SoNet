@@ -6,7 +6,7 @@ import (
 	"os"
 )
 
-type Config struct {
+type DBConfig struct {
 	Driver   string
 	Host     string
 	Port     string
@@ -16,7 +16,7 @@ type Config struct {
 	SSLMode  string
 }
 
-func InitConfig() Config {
+func GetDBConfig(pref string) DBConfig {
 
 	err := godotenv.Load()
 	if err != nil {
@@ -25,13 +25,13 @@ func InitConfig() Config {
 		}
 	}
 
-	return Config{
-		Driver:   os.Getenv("DB_DRIVER"),
-		Host:     os.Getenv("DB_HOST"),
-		Port:     os.Getenv("DB_PORT"),
-		User:     os.Getenv("DB_USER"),
-		Password: os.Getenv("DB_PASSWORD"),
-		DBName:   os.Getenv("DB_NAME"),
-		SSLMode:  os.Getenv("DB_SSLMODE"),
+	return DBConfig{
+		Driver:   os.Getenv(pref + "DRIVER"),
+		Host:     os.Getenv(pref + "HOST"),
+		Port:     os.Getenv(pref + "PORT"),
+		User:     os.Getenv(pref + "USER"),
+		Password: os.Getenv(pref + "PASSWORD"),
+		DBName:   os.Getenv(pref + "NAME"),
+		SSLMode:  os.Getenv(pref + "SSLMODE"),
 	}
 }

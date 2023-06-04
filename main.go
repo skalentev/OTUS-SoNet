@@ -1,6 +1,7 @@
 package main
 
 import (
+	"fmt"
 	"github.com/gin-gonic/gin"
 	"otus-sonet/models"
 	"otus-sonet/routes"
@@ -18,12 +19,23 @@ func main() {
 	models.Prom = models.NewPrometheus("http")
 	models.Prom.Use(r)
 
-	// Load .env file
-	dbConfig := models.InitConfig()
+	// Init Master DB
+	if err := models.DB.Init(models.GetDBConfig("DB_")); err != nil {
+		panic(err)
+	}
+	// Init ReadOnly DB
+	if err := models.DBRO.Init(models.GetDBConfig("RODB_")); err != nil {
+		panic(err)
+	}
 
-	// Initialize DB
-	models.InitDB(dbConfig)
-	defer models.CloseDB()
+	defer func() {
+		if err := models.DB.Close(); err != nil {
+			fmt.Println("DB close error")
+		}
+		if err := models.DBRO.Close(); err != nil {
+			fmt.Println("DBRO close error")
+		}
+	}()
 
 	// Load the routes
 	routes.Route(r)

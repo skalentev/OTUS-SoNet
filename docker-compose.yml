@@ -8,8 +8,27 @@ services:
       - ./.env:/app/.env
     ports:
       - 8080:8080
-    network_mode: "host"
+    networks:
+      - sonet
     environment:
       - GIN_MODE=release
 
+  cadvisor:
+    image: gcr.io/cadvisor/cadvisor:latest
+    container_name: cadvisor
+    ports:
+      - 9080:8080
+    volumes:
+      - /:/rootfs:ro
+      - /var/run:/var/run:rw
+      - /sys:/sys:ro
+      - /var/snap/docker/common/var-lib-docker/:/var/lib/docker:ro
+    depends_on:
+      - sonet
+
+networks:
+  sonet:
+    external: false
+  default:
+    external: false
 
