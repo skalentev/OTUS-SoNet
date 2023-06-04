@@ -4,12 +4,11 @@ services:
     container_name: sonet
     image: sonet:latest
     restart: always
-    networks:
-      - host
+    network_mode: "host"
     volumes:
       - ./.env:/app/.env
     ports:
-      - 8080:8080
+      - 0.0.0.0:8080/tcp
     environment:
       - GIN_MODE=release
 
