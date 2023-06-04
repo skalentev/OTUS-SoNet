@@ -23,3 +23,4 @@ update:
 	sudo docker build --no-cache -t sonet .
 	sudo docker compose down
 	sudo docker compose up -d
+	sudo docker container prune -f
