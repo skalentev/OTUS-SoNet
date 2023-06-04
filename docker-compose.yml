@@ -15,8 +15,8 @@ services:
       - GIN_MODE=release
 
   cadvisor:
-    ##image: gcr.io/cadvisor/cadvisor:latest
-    image: google/cadvisor:latest
+    image: gcr.io/cadvisor/cadvisor:latest
+    ##image: google/cadvisor:latest
     container_name: cadvisor
     network_mode: "host"
     ports:
