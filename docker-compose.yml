@@ -15,8 +15,7 @@ services:
   cadvisor:
     image: gcr.io/cadvisor/cadvisor:latest
     container_name: cadvisor
-    networks:
-      - cadvisor
+    network_mode: "host"
     ports:
       - 9080:8080
     volumes:
@@ -24,10 +23,3 @@ services:
       - /var/run:/var/run:rw
       - /sys:/sys:ro
       - /var/snap/docker/common/var-lib-docker/:/var/lib/docker:ro
-    depends_on:
-      - sonet
-
-networks:
-  cadvisor:
-    name: host
-
