@@ -30,6 +30,3 @@ networks:
   sonet:
     external: true
     name: host
-  default:
-    external: true
-    name: host
