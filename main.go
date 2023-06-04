@@ -3,6 +3,7 @@ package main
 import (
 	"fmt"
 	"github.com/gin-gonic/gin"
+	"os"
 	"otus-sonet/models"
 	"otus-sonet/routes"
 )
@@ -39,9 +40,13 @@ func main() {
 
 	// Load the routes
 	routes.Route(r)
+	var addr = os.Getenv("LISTEN_ADDR")
 
+	if addr == "" {
+		addr = ":8080"
+	}
 	// Run the server
-	if err := r.Run(":8080"); err != nil {
+	if err := r.Run(addr); err != nil {
 		panic(err)
 	}
 
