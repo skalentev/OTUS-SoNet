@@ -4,18 +4,19 @@ services:
     container_name: sonet
     image: sonet:latest
     restart: always
+    network_mode: "host"
     volumes:
       - ./.env:/app/.env
     ports:
       - 8080:8080
-    networks:
-      - sonet
     environment:
       - GIN_MODE=release
 
   cadvisor:
     image: gcr.io/cadvisor/cadvisor:latest
+    restart: always
     container_name: cadvisor
+    network_mode: "host"
     ports:
       - 9080:8080
     volumes:
@@ -26,6 +27,4 @@ services:
     depends_on:
       - sonet
 
-networks:
-  sonet:
-    external: false
+
