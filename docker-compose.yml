@@ -4,7 +4,7 @@ services:
     container_name: sonet
     image: sonet:latest
     restart: always
-    network_mode: "host"
+    ##network_mode: "host"
     volumes:
       - ./.env:/app/.env
     ports:
@@ -18,17 +18,13 @@ services:
     image: gcr.io/cadvisor/cadvisor:latest
     ##image: google/cadvisor:latest
     container_name: cadvisor
-    network_mode: "host"
+    ##network_mode: "host"
     ports:
       - 9080:8080
-    networks:
-      - cadvisor
+    ##networks:
+      ##- cadvisor
     volumes:
       - /:/rootfs:ro
       - /var/run:/var/run:rw
       - /sys:/sys:ro
       - /var/snap/docker/common/var-lib-docker/:/var/lib/docker:ro
-
-
-networks:
-  cadvisor:
