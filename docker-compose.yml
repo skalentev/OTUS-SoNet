@@ -8,7 +8,9 @@ services:
     volumes:
       - ./.env:/app/.env
     ports:
-      - 0.0.0.0:8080/tcp
+      - target: 8080
+        published: 0.0.0.0:8080
+        protocol: tcp
     environment:
       - GIN_MODE=release
 
