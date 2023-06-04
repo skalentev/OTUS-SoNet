@@ -4,7 +4,7 @@ services:
     container_name: sonet
     image: sonet:latest
     restart: always
-    network_mode: "host"
+    ##network_mode: "host"
     volumes:
       - ./.env:/app/.env
     ports:
