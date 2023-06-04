@@ -28,7 +28,8 @@ services:
 
 networks:
   sonet:
-    external: false
+    external: true
+    name: host
   default:
-    external: false
-
+    external: true
+    name: host
