@@ -18,7 +18,7 @@ services:
     image: gcr.io/cadvisor/cadvisor:latest
     ##image: google/cadvisor:latest
     container_name: cadvisor
-    ##network_mode: "host"
+    network_mode: "host"
     ports:
       - 9080:8080
     ##networks:

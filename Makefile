@@ -8,11 +8,11 @@ GOLANG_DOCKER_CONTAINER := goesquerydsl-container
 #help:
 #       make -pRrq  -f $(THIS_FILE) : 2>/dev/null | awk -v RS= -F: '/^# File/,/^# Finished Make data base/ {if ($$1 !~ "^[#.]") {print $$1}}' | sort | egrep -v -e '^[^[\:alnum\:]]' -e '^$@$$'
 build:
-	docker-compose -f docker-compose.yml build --no-cache -t sonet .
+	sudo docker build --no-cache -t sonet .
 up:
-	docker-compose -f docker-compose.yml up -d $(c)
+	sudo docker compose -f docker-compose.yml up -d
 down:
-	docker-compose -f docker-compose.yml down $(c)
+	sudo docker compose -f docker-compose.yml down
 restart:
 	git pull --no-edit
 	sudo docker compose -f docker-compose.yml down
