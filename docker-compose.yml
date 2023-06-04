@@ -14,7 +14,6 @@ services:
 
   cadvisor:
     image: gcr.io/cadvisor/cadvisor:latest
-    restart: always
     container_name: cadvisor
     network_mode: "host"
     ports:
