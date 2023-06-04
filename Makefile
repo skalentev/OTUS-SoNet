@@ -18,6 +18,8 @@ restart:
 	docker-compose -f docker-compose.yml up -d $(c)
 logs:
 	sudo docker compose -f docker-compose.yml logs --tail=100 -f sonet
+clean:
+	sudo docker image rm -f $(docker image ls -aq)
 update:
 	git pull --no-edit
 	sudo docker build --no-cache -t sonet .
