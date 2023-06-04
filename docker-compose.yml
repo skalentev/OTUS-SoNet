@@ -28,4 +28,4 @@ services:
 
 networks:
   sonet:
-    external: true
+    external: false
