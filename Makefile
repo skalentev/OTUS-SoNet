@@ -33,6 +33,14 @@ cluster-up:
 	sudo docker compose -f ./Cluster/docker-compose.yml up -d
 cluster-down:
 	sudo docker compose -f ./Cluster/docker-compose.yml down
+psql1:
+	docker exec -ti pg1 psql -d cluster -U user
+psql2:
+	docker exec -ti pg2 psql -d cluster -U user
+psql3:
+	docker exec -ti pg3 psql -d cluster -U user
+
+
 update:
 	git pull --no-edit
 	sudo docker build --no-cache -t sonet .
