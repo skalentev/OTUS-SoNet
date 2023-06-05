@@ -6,8 +6,8 @@ services:
     restart: always
     volumes:
       - /tmp/data_pg1:/var/lib/postgresql/data
-      - ./Cluster/Postgresql1.conf:/var/lib/postgresql/data/postgresql.conf
-      - ./Cluster/pg_hba.conf:/var/lib/postgresql/data/pg_hba.conf
+      - ./Postgresql1.conf:/var/lib/postgresql/data/postgresql.conf
+      - ./pg_hba.conf:/var/lib/postgresql/data/pg_hba.conf
     networks:
       - pgnet
     environment:
