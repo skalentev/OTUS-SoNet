@@ -20,7 +20,11 @@ restart:
 logs:
 	sudo docker compose -f docker-compose.yml logs --tail=100 -f sonet
 clean:
-	sudo docker image rm -f $(docker image ls -aq)
+	sudo docker image rm -f $(sudo docker image ls -aq)
+cluster-up:
+	sudo docker compose -f ./Cluster/docker-compose.yml up -d
+cluster-down:
+	sudo docker compose -f ./Cluster/docker-compose.yml down
 update:
 	git pull --no-edit
 	sudo docker build --no-cache -t sonet .
