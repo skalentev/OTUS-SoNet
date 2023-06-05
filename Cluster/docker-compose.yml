@@ -9,8 +9,8 @@ services:
       - ./Postgresql1.conf:/var/lib/postgresql/data/postgresql.conf:ro
       - ./pg_hba.conf:/var/lib/postgresql/data/pg_hba.conf:ro
       ##- ./initdb.sql:/docker-entrypoint-initdb.d/init.sql
-    ##networks:
-      ##- pgnet
+    networks:
+      - pgnet
     environment:
       POSTGRES_DB: cluster
       POSTGRES_USER: user
@@ -24,8 +24,8 @@ services:
       ##- ./Postgresql1.conf:/var/lib/postgresql/data/postgresql.conf
       ##- ./pg_hba.conf:/var/lib/postgresql/data/pg_hba.conf
       ##- ./initdb.sql:/docker-entrypoint-initdb.d/init.sql
-    ##networks:
-      ##- pgnet
+    networks:
+      - pgnet
     environment:
       POSTGRES_DB: cluster
       POSTGRES_USER: user
@@ -40,17 +40,41 @@ services:
       ##- ./Postgresql1.conf:/var/lib/postgresql/data/postgresql.conf
       ##- ./pg_hba.conf:/var/lib/postgresql/data/pg_hba.conf
       #- ./initdb.sql:/docker-entrypoint-initdb.d/init.sql
-    ##networks:
-      ##- pgnet
+    networks:
+      - pgnet
     environment:
       POSTGRES_DB: cluster
       POSTGRES_USER: user
       POSTGRES_PASSWORD: password
+
+
+  cadvisor:
+    image: gcr.io/cadvisor/cadvisor:latest
+    ##image: gcr.io/cadvisor/cadvisor:v0.46.0
+    ##image: google/cadvisor:latest
+    container_name: cadvisor
+    restart: always
+    privileged: true
+    devices:
+      - /dev/kmsg
+    ##network_mode: "host"
+    ports:
+      - 9080:8080
+    networks:
+      - pgnet
+    volumes:
+      - /:/rootfs:ro
+      - /var/run:/var/run:rw
+      - /sys:/sys:ro
+      - /var/lib/docker/:/var/lib/docker:ro
+      - /sys/fs/cgroup/:/cgroup:ro
+      - /dev/disk/:/dev/disk:ro
+
 volumes:
   data_pg1:
   data_pg2:
   data_pg3:
 
-##networks:
-  ##pgnet:
-    ##driver: bridge
+networks:
+  pgnet:
+    driver: bridge

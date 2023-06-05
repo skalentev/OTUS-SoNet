@@ -13,26 +13,3 @@ services:
         protocol: tcp
     environment:
       - GIN_MODE=release
-
-  cadvisor:
-    image: gcr.io/cadvisor/cadvisor:latest
-    ##image: gcr.io/cadvisor/cadvisor:v0.46.0
-    ##image: google/cadvisor:latest
-    container_name: cadvisor
-    restart: always
-    privileged: true
-    devices:
-      - /dev/kmsg
-    ##network_mode: "host"
-    ports:
-      - 9080:8080
-    ##networks:
-      ##- cadvisor
-    volumes:
-      - /:/rootfs:ro
-      - /var/run:/var/run:rw
-      - /sys:/sys:ro
-      - /var/lib/docker/:/var/lib/docker:ro
-      - /sys/fs/cgroup/:/cgroup:ro
-      - /dev/disk/:/dev/disk:ro
-
