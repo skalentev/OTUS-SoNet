@@ -70,6 +70,25 @@ services:
       - /sys/fs/cgroup/:/cgroup:ro
       - /dev/disk/:/dev/disk:ro
 
+  node-exporter:
+    image: prom/node-exporter:latest
+    container_name: node-exporter
+    restart: always
+    volumes:
+      - /proc:/host/proc:ro
+      - /sys:/host/sys:ro
+      - /:/rootfs:ro
+    command:
+      - "--path.procfs=/host/proc"
+      - "--path.sysfs=/host/sys"
+      - "--path.rootfs=/rootfs"
+      - "--collector.filesystem.ignored-mount-points='^/(sys|proc|dev|host|etc|rootfs/var/lib/docker/containers|rootfs/var/lib/docker/overlay2|rootfs/run/docker/netns|rootfs/var/lib/docker/aufs)($$|/)'"
+    ports:
+      - 9100:9100
+    environment:
+      TZ: "Europe/Moscow"
+
+
 volumes:
   data_pg1:
   data_pg2:
