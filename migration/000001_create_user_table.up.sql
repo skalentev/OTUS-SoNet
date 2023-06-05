@@ -19,7 +19,7 @@ SET default_table_access_method = heap;
 -- Name: user; Type: TABLE; Schema: public; Owner: user
 --
 CREATE TABLE public."user" (
-                               id character varying(64) DEFAULT public.uuid_generate_v4() NOT NULL,
+                               id character varying(64)  NOT NULL,
                                created_at timestamp without time zone DEFAULT CURRENT_TIMESTAMP,
                                updated_at timestamp without time zone DEFAULT CURRENT_TIMESTAMP,
                                deleted_at timestamp without time zone,
