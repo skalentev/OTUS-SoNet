@@ -22,6 +22,7 @@ logs:
 clean:
 	sudo docker image rm -f $(sudo docker image ls -aq)
 cluster-up:
+	mkdir -p /tmp/data_pg{1,2,3}
 	sudo docker compose -f ./Cluster/docker-compose.yml up -d
 cluster-down:
 	sudo docker compose -f ./Cluster/docker-compose.yml down
