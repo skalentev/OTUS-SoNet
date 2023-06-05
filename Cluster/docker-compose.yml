@@ -9,8 +9,8 @@ services:
       - ./Postgresql1.conf:/var/lib/postgresql/data/postgresql.conf
       - ./pg_hba.conf:/var/lib/postgresql/data/pg_hba.conf
       - ./initdb.sql:/docker-entrypoint-initdb.d/init.sql
-    networks:
-      - pgnet
+    ##networks:
+      ##- pgnet
     environment:
       POSTGRES_DB: cluster
       POSTGRES_USER: user
@@ -24,8 +24,8 @@ services:
       - ./Postgresql1.conf:/var/lib/postgresql/data/postgresql.conf
       - ./pg_hba.conf:/var/lib/postgresql/data/pg_hba.conf
       - ./initdb.sql:/docker-entrypoint-initdb.d/init.sql
-    networks:
-      - pgnet
+    ##networks:
+      ##- pgnet
     environment:
       POSTGRES_DB: cluster
       POSTGRES_USER: user
@@ -40,13 +40,13 @@ services:
       - ./Postgresql1.conf:/var/lib/postgresql/data/postgresql.conf
       - ./pg_hba.conf:/var/lib/postgresql/data/pg_hba.conf
       - ./initdb.sql:/docker-entrypoint-initdb.d/init.sql
-    networks:
-      - pgnet
+    ##networks:
+      ##- pgnet
     environment:
       POSTGRES_DB: cluster
       POSTGRES_USER: user
       POSTGRES_PASSWORD: password
 
-networks:
-  pgnet:
-    driver: bridge
+##networks:
+  ##pgnet:
+    ##driver: bridge
