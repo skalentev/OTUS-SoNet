@@ -12,11 +12,8 @@ CREATE TABLE IF NOT EXISTS public."user" (
 );
 ALTER TABLE ONLY public."user"
     ADD CONSTRAINT user_pkey PRIMARY KEY (id);
-
 CREATE INDEX IF NOT EXISTS idx_first_name ON public."user" USING btree (first_name);
-
 CREATE INDEX IF NOT EXISTS idx_second_name ON public."user" USING btree (second_name);
-
 CREATE TABLE IF NOT EXISTS public.session (
                                 token character varying(64) NOT NULL,
                                 user_id character varying(64) NOT NULL,
@@ -25,8 +22,5 @@ CREATE TABLE IF NOT EXISTS public.session (
                                 deleted_at timestamp without time zone,
                                 token_till timestamp without time zone
 );
-
-
 ALTER TABLE ONLY public.session
     ADD CONSTRAINT session_user_id_fkey FOREIGN KEY (user_id) REFERENCES public."user"(id);
-

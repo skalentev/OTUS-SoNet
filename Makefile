@@ -22,7 +22,8 @@ restart:
 logs:
 	sudo docker compose -f docker-compose.yml logs --tail=100 -f sonet
 clean:
-	sudo docker image rm -f $(sudo docker image ls -aq)
+	sudo docker image rm $(sudo docker image ls -aq)
+	sudo docker volume rm $(sudo docker volume ls -q)
 cluster-up:
 	mkdir -p /tmp/data_pg1
 	mkdir -p /tmp/data_pg2
