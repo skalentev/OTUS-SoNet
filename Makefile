@@ -6,7 +6,7 @@ GOLANG_DOCKER_IMAGE     := golang:1.18
 GOLANG_DOCKER_CONTAINER := goesquerydsl-container
 
 help:
-	make -pRrq  -f $(THIS_FILE) : 2>/dev/null | awk -v RS= -F: '/^# File/,/^# Finished Make data base/ {if ($$1 !~ "^[#.]") {print $$1}}' | sort | egrep -v -e '^[^[\:alnum\:]]' -e '^$@$$'
+	echo "use make <command>, commands: build, up, down, restart, update, clean, cluster-up, cluster-down, cluster-clean"
 build:
 	git pull --no-edit
 	sudo docker build --no-cache -t sonet .
