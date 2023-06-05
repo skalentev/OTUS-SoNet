@@ -1,0 +1,46 @@
+version: '3.9'
+services:
+  postgresql_01:
+    image: postgres:14
+    container_name: pg1
+    restart: always
+    volumes:
+      - /tmp/data_pg1:/var/lib/postgresql/data
+      - ./Postgresql1.conf:/etc/conf.d/postgresql.conf
+    networks:
+      - pgnet
+    environment:
+      POSTGRES_DB: cluster
+      POSTGRES_USER: user
+      POSTGRES_PASSWORD: password
+  postgresql_02:
+    image: postgres:14
+    container_name: pg2
+    restart: always
+    volumes:
+      - /tmp/data_pg2/:/var/lib/postgresql/data
+      - ./Postgresql1.conf:/etc/conf.d/postgresql.conf
+    networks:
+      - pgnet
+    environment:
+      POSTGRES_DB: cluster
+      POSTGRES_USER: user
+      POSTGRES_PASSWORD: password
+
+  postgresql_03:
+    image: postgres:14
+    container_name: pg3
+    restart: always
+    volumes:
+      - /tmp/data_pg3/:/var/lib/postgresql/data
+      - ./Postgresql1.conf:/etc/conf.d/postgresql.conf
+    networks:
+      - pgnet
+    environment:
+      POSTGRES_DB: cluster
+      POSTGRES_USER: user
+      POSTGRES_PASSWORD: password
+
+networks:
+  pgnet:
+    driver: bridge
