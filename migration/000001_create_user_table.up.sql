@@ -1,8 +1,7 @@
 --
 -- PostgreSQL database dump
 --
--- Dumped from database version 14.8 (Ubuntu 14.8-0ubuntu0.22.04.1)
--- Dumped by pg_dump version 14.8 (Ubuntu 14.8-0ubuntu0.22.04.1)
+
 SET statement_timeout = 0;
 SET lock_timeout = 0;
 SET idle_in_transaction_session_timeout = 0;
@@ -44,13 +43,6 @@ CREATE INDEX idx_first_name ON public."user" USING btree (first_name);
 -- Name: idx_second_name; Type: INDEX; Schema: public; Owner: user
 --
 CREATE INDEX idx_second_name ON public."user" USING btree (second_name);
---
--- PostgreSQL database dump complete
---
-
---
--- PostgreSQL database dump
---
 
 -- Dumped from database version 14.8 (Ubuntu 14.8-0ubuntu0.22.04.1)
 -- Dumped by pg_dump version 14.8 (Ubuntu 14.8-0ubuntu0.22.04.1)
