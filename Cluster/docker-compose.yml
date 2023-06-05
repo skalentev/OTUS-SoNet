@@ -21,8 +21,8 @@ services:
     restart: always
     volumes:
       - data_pg2:/var/lib/postgresql/data
-      ##- ./Postgresql1.conf:/var/lib/postgresql/data/postgresql.conf
-      ##- ./pg_hba.conf:/var/lib/postgresql/data/pg_hba.conf
+      - ./Postgresql1.conf:/var/lib/postgresql/data/postgresql.conf
+      - ./pg_hba.conf:/var/lib/postgresql/data/pg_hba.conf
       ##- ./initdb.sql:/docker-entrypoint-initdb.d/init.sql
     networks:
       - pgnet
@@ -37,8 +37,8 @@ services:
     restart: always
     volumes:
       - data_pg3:/var/lib/postgresql/data
-      ##- ./Postgresql1.conf:/var/lib/postgresql/data/postgresql.conf
-      ##- ./pg_hba.conf:/var/lib/postgresql/data/pg_hba.conf
+      - ./Postgresql1.conf:/var/lib/postgresql/data/postgresql.conf
+      - ./pg_hba.conf:/var/lib/postgresql/data/pg_hba.conf
       #- ./initdb.sql:/docker-entrypoint-initdb.d/init.sql
     networks:
       - pgnet
