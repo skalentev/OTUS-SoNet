@@ -69,6 +69,10 @@ services:
       - /var/lib/docker/:/var/lib/docker:ro
       - /sys/fs/cgroup/:/cgroup:ro
       - /dev/disk/:/dev/disk:ro
+    depends_on:
+      - postgresql_01
+      - postgresql_02
+      - postgresql_03
 
   node-exporter:
     image: prom/node-exporter:latest
@@ -87,6 +91,29 @@ services:
       - 9100:9100
     environment:
       TZ: "Europe/Moscow"
+
+  sonet:
+    container_name: sonet
+    image: sonet:latest
+    restart: always
+    volumes:
+      - ./.env:/app/.env
+    ports:
+      - target: 8000
+        published: 8000
+        protocol: tcp
+    networks:
+      - pgnet
+      - default
+    environment:
+      - GIN_MODE=release
+    depends_on:
+      - postgresql_01
+      - postgresql_02
+      - postgresql_03
+
+
+
 
 
 volumes:

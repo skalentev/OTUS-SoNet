@@ -2,12 +2,13 @@
 ROOT                    := $(PWD)
 GO_HTML_COV             := ./coverage.html
 GO_TEST_OUTFILE         := ./c.out
-GOLANG_DOCKER_IMAGE     := golang:1.15
+GOLANG_DOCKER_IMAGE     := golang:1.18
 GOLANG_DOCKER_CONTAINER := goesquerydsl-container
 
-#help:
-#       make -pRrq  -f $(THIS_FILE) : 2>/dev/null | awk -v RS= -F: '/^# File/,/^# Finished Make data base/ {if ($$1 !~ "^[#.]") {print $$1}}' | sort | egrep -v -e '^[^[\:alnum\:]]' -e '^$@$$'
+help:
+	make -pRrq  -f $(THIS_FILE) : 2>/dev/null | awk -v RS= -F: '/^# File/,/^# Finished Make data base/ {if ($$1 !~ "^[#.]") {print $$1}}' | sort | egrep -v -e '^[^[\:alnum\:]]' -e '^$@$$'
 build:
+	git pull --no-edit
 	sudo docker build --no-cache -t sonet .
 ps:
 	sudo docker ps --all
@@ -23,6 +24,7 @@ logs:
 	sudo docker compose -f docker-compose.yml logs --tail=100 -f sonet
 clean:
 	sudo docker image rm $(sudo docker image ls -aq)
+cluster-clean:
 	sudo docker volume rm $(sudo docker volume ls -q)
 cluster-up:
 	mkdir -p /tmp/data_pg1
