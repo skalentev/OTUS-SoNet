@@ -28,3 +28,6 @@ services:
       - /var/run:/var/run:rw
       - /sys:/sys:ro
       - /var/snap/docker/common/var-lib-docker/:/var/lib/docker:ro
+      - /dev/kmsg:/dev/kmsg:ro
+      - /sys/fs/cgroup/:/cgroup:ro
+
