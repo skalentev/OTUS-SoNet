@@ -30,7 +30,7 @@ func UserSearch(c *gin.Context) {
 	case "mysql":
 		query = "SELECT u.id, u.first_name, u.second_name, u.birthdate, COALESCE(u.biography,'-') as biography, u.city from user u WHERE u.first_name LIKE ? AND u.second_name LIKE ? ORDER BY u.id "
 	default:
-		query = "SELECT id, first_name, second_name, birthdate, COALESCE(biography,'-') as biography, city from public.user WHERE first_name LIKE $1 AND second_name LIKE $2 ORDER BY id"
+		query = "SELECT u.id, u.first_name, u.second_name, u.birthdate, COALESCE(u.biography,'-') as biography, u.city from public.user u WHERE u.first_name LIKE $1 AND u.second_name LIKE $2 ORDER BY u.id"
 	}
 	rows, err := models.DBRO.DB.Query(query,
 		firstName+"%", lastName+"%")

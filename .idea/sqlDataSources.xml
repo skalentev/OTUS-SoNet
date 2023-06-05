@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="DdlMappings">
+    <mapping uuid="ed14c067-ae7f-46f7-b33e-c55c6fd17640" name="goauth@192.168.88.203 Mapping">
+      <data-sources db="0e96b99c-d760-4d07-87c1-9e58b2ebfef6" ddl="06608c9f-8751-4015-aaeb-b351e1e317ec" />
+      <scope>
+        <node kind="database" qname="goauth">
+          <node kind="schema" qname="@" />
+        </node>
+      </scope>
+    </mapping>
+  </component>
+  <component name="SqlDataSourceStorage">
+    <option name="dataSources">
+      <list>
+        <State>
+          <option name="id" value="06608c9f-8751-4015-aaeb-b351e1e317ec" />
+          <option name="name" value="goauth@192.168.88.203 (DDL)" />
+          <option name="dbmsName" value="POSTGRES" />
+          <option name="urls">
+            <array>
+              <option value="file://$PROJECT_DIR$/migration" />
+            </array>
+          </option>
+          <option name="outLayout" value="File per object by schema.groovy" />
+        </State>
+      </list>
+    </option>
+  </component>
+</project>
