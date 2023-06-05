@@ -21,7 +21,7 @@ restart:
 	sudo docker compose -f docker-compose.yml down
 	sudo docker compose -f docker-compose.yml up -d
 logs:
-	sudo docker compose -f docker-compose.yml logs --tail=100 -f sonet
+	sudo docker logs --tail=100 -f sonet
 clean:
 	sudo docker image rm $(sudo docker image ls -aq)
 cluster-clean:
