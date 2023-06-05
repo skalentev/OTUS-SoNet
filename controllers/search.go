@@ -39,7 +39,13 @@ func UserSearch(c *gin.Context) {
 		fmt.Println("DBErr:", err)
 		return
 	}
-	defer rows.Close()
+	defer func() {
+		err := rows.Close()
+		if err != nil {
+			fmt.Println("Row close error:", err)
+			return
+		}
+	}()
 	models.Prom.DbTimeSummary.WithLabelValues("select", "userSearch", "query").Observe(float64(time.Since(start).Milliseconds()))
 	models.Prom.DbTimeGauge.WithLabelValues("select", "userSearch", "query").Set(float64(time.Since(start).Milliseconds()))
 
