@@ -28,6 +28,21 @@ cluster-clean:
 	echo 'run  docker volume rm $(docker volume ls -q)'
 cluster-up:
 	sudo docker compose -f ./Cluster/docker-compose.yml up -d
+	sleep 5
+	sudo docker cp Cluster/pg_hba.conf pg1:/var/lib/postgresql/data/pg_hba.conf
+	sudo docker cp Cluster/Postgresql1.conf pg1:/var/lib/postgresql/data/postgresql.conf
+	sudo docker compose -f ./Cluster/docker-compose.yml restart pg1
+	sudo docker compose -f ./Cluster/docker-compose.yml stop pg2
+	sudo docker exec pg1 mkdir -p /pgslave
+	sudo docker exec -e PGPASSWORD='pass' pg1 pg_basebackup -h pg1 -D /pgslave -U replicator -v -P --wal-method=stream
+	sudo docker cp pg1:/pgslave /tmp/pgslave
+	sudo docker cp /tmp/pgslave pg2:/pgslave
+	sudo docker cp Cluster/Postgresql2.conf pg2:/var/lib/postgresql/data/postgresql.conf
+	sudo docker cp Cluster/pg_hba.conf pg2:/var/lib/postgresql/data/pg_hba.conf
+	sudo docker cp Cluster/standby.signal pg2:/var/lib/postgresql/data/standby.signal
+	sudo docker compose -f ./Cluster/docker-compose.yml start pg2
+
+
 cluster-down:
 	sudo docker compose -f ./Cluster/docker-compose.yml down
 psql1:
