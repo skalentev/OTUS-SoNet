@@ -41,10 +41,11 @@ cluster-up:
 	sudo docker cp Cluster/pg_hba.conf pg2:/var/lib/postgresql/data/pg_hba.conf
 	sudo docker cp Cluster/standby.signal pg2:/var/lib/postgresql/data/standby.signal
 	sudo docker compose -f ./Cluster/docker-compose.yml start pg2
-
-
 cluster-down:
 	sudo docker compose -f ./Cluster/docker-compose.yml down
+cluster-drop:
+	sudo docker compose -f ./Cluster/docker-compose.yml -v down
+	sudo rm -r /tmp/pgslave
 psql1:
 	sudo docker exec -ti pg1 psql -d cluster -U user
 psql2:
