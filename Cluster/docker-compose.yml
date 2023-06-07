@@ -41,6 +41,7 @@ services:
       - ./Postgresql3.conf:/var/lib/postgresql/data/postgresql.conf
       - ./pg_hba.conf:/var/lib/postgresql/data/pg_hba.conf
       - ./standby.signal:/var/lib/postgresql/data/standby.signal
+      - ./initdb.sql:/docker-entrypoint-initdb.d/1-portal.sql
       #- ./initdb.sql:/docker-entrypoint-initdb.d/init.sql
     networks:
       - pgnet

@@ -25,7 +25,7 @@ logs:
 clean:
 	sudo docker image rm $(sudo docker image ls -aq)
 cluster-clean:
-	sudo docker volume rm $(sudo docker volume ls -q)
+	sudo docker volume rm \$(sudo docker volume ls -q)
 cluster-up:
 	mkdir -p data_pg1
 	mkdir -p data_pg2
