@@ -34,12 +34,17 @@ cluster-up:
 cluster-down:
 	sudo docker compose -f ./Cluster/docker-compose.yml down
 psql1:
-	docker exec -ti pg1 psql -d cluster -U user
+	sudo docker exec -ti pg1 psql -d cluster -U user
 psql2:
-	docker exec -ti pg2 psql -d cluster -U user
+	sudo docker exec -ti pg2 psql -d cluster -U user
 psql3:
-	docker exec -ti pg3 psql -d cluster -U user
-
+	sudo docker exec -ti pg3 psql -d cluster -U user
+pg1:
+	sudo docker exec -ti pg1 bash
+pg2:
+	sudo docker exec -ti pg2 bash
+pg3:
+	sudo docker exec -ti pg3 bash
 
 update:
 	git pull --no-edit
