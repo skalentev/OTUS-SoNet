@@ -27,7 +27,7 @@ clean:
 cluster-clean:
 	echo 'run  docker volume rm $(docker volume ls -q)'
 cluster-up:
-	sudo docker compose -f ./Cluster/docker-compose.yml up -d
+	sudo docker compose -f ./Cluster/docker-compose.yml up -d pg1 cadvisor node-exporter sonet
 	sleep 5
 	sudo docker cp Cluster/pg_hba.conf pg1:/var/lib/postgresql/data/pg_hba.conf
 	sudo docker cp Cluster/Postgresql1.conf pg1:/var/lib/postgresql/data/postgresql.conf
