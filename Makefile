@@ -36,7 +36,7 @@ cluster-up:
 	sudo docker exec pg1 mkdir -p /pgslave
 	sudo docker exec -e PGPASSWORD='pass' pg1 pg_basebackup -h pg1 -D /pgslave -U replicator -v -P --wal-method=stream
 	sudo docker cp pg1:/pgslave /tmp/pgslave
-	sudo docker cp /tmp/pgslave pg2:/pgslave
+#	sudo docker cp /tmp/pgslave pg2:/pgslave
 	sudo docker cp Cluster/Postgresql2.conf pg2:/var/lib/postgresql/data/postgresql.conf
 	sudo docker cp Cluster/pg_hba.conf pg2:/var/lib/postgresql/data/pg_hba.conf
 	sudo docker cp Cluster/standby.signal pg2:/var/lib/postgresql/data/standby.signal
@@ -44,7 +44,7 @@ cluster-up:
 cluster-down:
 	sudo docker compose -f ./Cluster/docker-compose.yml down
 cluster-drop:
-	sudo docker compose -f ./Cluster/docker-compose.yml -v down
+	sudo docker compose -f ./Cluster/docker-compose.yml down -v
 	sudo rm -r /tmp/pgslave
 psql1:
 	sudo docker exec -ti pg1 psql -d cluster -U user
