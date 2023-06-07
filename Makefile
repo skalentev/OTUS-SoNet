@@ -27,9 +27,6 @@ clean:
 cluster-clean:
 	echo 'run  docker volume rm $(docker volume ls -q)'
 cluster-up:
-	mkdir -p data_pg1
-	mkdir -p data_pg2
-	mkdir -p data_pg3
 	sudo docker compose -f ./Cluster/docker-compose.yml up -d
 cluster-down:
 	sudo docker compose -f ./Cluster/docker-compose.yml down
