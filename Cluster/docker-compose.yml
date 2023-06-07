@@ -21,9 +21,9 @@ services:
     restart: always
     volumes:
       - data_pg2:/var/lib/postgresql/data
-      - ./Postgresql2.conf:/var/lib/postgresql/data/postgresql.conf
-      - ./pg_hba.conf:/var/lib/postgresql/data/pg_hba.conf
-      - ./standby.signal:/var/lib/postgresql/data/standby.signal
+      ##- ./Postgresql2.conf:/var/lib/postgresql/data/postgresql.conf
+      ##- ./pg_hba.conf:/var/lib/postgresql/data/pg_hba.conf
+      ##- ./standby.signal:/var/lib/postgresql/data/standby.signal
       ##- ./initdb.sql:/docker-entrypoint-initdb.d/init.sql
     networks:
       - pgnet
@@ -38,10 +38,10 @@ services:
     restart: always
     volumes:
       - data_pg3:/var/lib/postgresql/data
-      - ./Postgresql3.conf:/var/lib/postgresql/data/postgresql.conf
-      - ./pg_hba.conf:/var/lib/postgresql/data/pg_hba.conf
-      - ./standby.signal:/var/lib/postgresql/data/standby.signal
-      - ./initdb.sql:/docker-entrypoint-initdb.d/1-portal.sql
+      ##- ./Postgresql3.conf:/var/lib/postgresql/data/postgresql.conf
+      ##- ./pg_hba.conf:/var/lib/postgresql/data/pg_hba.conf
+      ##- ./standby.signal:/var/lib/postgresql/data/standby.signal
+      ##- ./initdb.sql:/docker-entrypoint-initdb.d/1-portal.sql
       #- ./initdb.sql:/docker-entrypoint-initdb.d/init.sql
     networks:
       - pgnet
