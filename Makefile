@@ -37,6 +37,7 @@ cluster-import:
 cluster-upslave:
 	sudo mkdir -p /tmp/data_pg2
 	sudo mkdir -p /tmp/data_pg3
+	sudo mkdir -o /tmp/pgslave
 	sudo docker exec pg1 mkdir -p /pgslave
 	sudo docker exec -e PGPASSWORD='pass' pg1 pg_basebackup -h pg1 -D /pgslave -U replicator -v -P --wal-method=stream
 	sudo docker cp pg1:/pgslave /tmp/pgslave
