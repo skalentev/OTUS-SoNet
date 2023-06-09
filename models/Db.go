@@ -91,7 +91,7 @@ func (d *Db) Init(cfg DBConfig) error {
 
 	_, err = d.DB.Exec(d.lastQuery)
 	if err != nil {
-		return err
+		fmt.Println(err)
 	}
 
 	switch d.Driver {
@@ -123,7 +123,7 @@ func (d *Db) Init(cfg DBConfig) error {
 
 	_, err = d.DB.Exec(d.lastQuery)
 	if err != nil {
-		return err
+		fmt.Println(err)
 	}
 
 	return nil
