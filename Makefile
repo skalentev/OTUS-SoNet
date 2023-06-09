@@ -52,10 +52,10 @@ cluster-down:
 	sudo docker compose -f ./Cluster/docker-compose.yml down
 cluster-drop:
 	sudo docker compose -f ./Cluster/docker-compose.yml down -v
-	sudo rm -r /tmp/data-pg1
-	sudo rm -r /tmp/data-pg2
-	sudo rm -r /tmp/data-pg3
-	sudo rm -r /tmp/pgslave
+	sudo rm -r /tmp/data-pg1 || true
+	sudo rm -r /tmp/data-pg2 || true
+	sudo rm -r /tmp/data-pg3 || true
+	sudo rm -r /tmp/pgslave || true
 psql1:
 	sudo docker exec -ti pg1 psql -d cluster -U user
 psql2:
