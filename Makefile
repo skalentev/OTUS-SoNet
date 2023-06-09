@@ -50,6 +50,12 @@ cluster-upslave:
 	sudo cp Cluster/pg_hba.conf /tmp/data_pg3/pg_hba.conf
 	sudo cp Cluster/standby.signal /tmp/data_pg3/standby.signal
 	sudo docker compose -f ./Cluster/docker-compose.yml up -d pg2 pg3
+cluster-update:
+	git pull --no-edit
+	sudo docker build --no-cache -t sonet .
+	sudo docker stop sonet || true
+	sudo docker container prune -f
+	sudo docker compose -f ./Cluster/docker-compose.yml up -d sonet
 cluster-down:
 	sudo docker compose -f ./Cluster/docker-compose.yml down
 cluster-drop:
