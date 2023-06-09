@@ -6,7 +6,7 @@ services:
     restart: unless-stopped
     volumes:
       - /tmp/data_pg1:/var/lib/postgresql/data
-      ##- ./Postgresql1.conf:/var/lib/postgresql/data/postgresql.conf:ro
+      ##- ./Postgmake pg1resql1.conf:/var/lib/postgresql/data/postgresql.conf:ro
       ##- ./pg_hba.conf:/var/lib/postgresql/data/pg_hba.conf:ro
       - ./initdb.sql:/docker-entrypoint-initdb.d/1-init.sql:ro
     networks:
