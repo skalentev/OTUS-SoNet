@@ -26,7 +26,8 @@ func main() {
 	}
 	// Init ReadOnly DB
 	if err := models.DBRO.Init(models.GetDBConfig("RODB_")); err != nil {
-		panic(err)
+		fmt.Println("DB slave error, using master fo RO requests. error:", err)
+		models.DBRO = models.DB
 	}
 
 	defer func() {
