@@ -31,3 +31,5 @@ CREATE TABLE IF NOT EXISTS public.session (
 
 ALTER TABLE ONLY public.session
     ADD CONSTRAINT session_user_id_fkey FOREIGN KEY (user_id) REFERENCES public."user"(id);
+
+copy public.user from program 'unzip -p /var/lib/postgresql/data/user.csv.gz'

@@ -27,12 +27,14 @@ clean:
 cluster-clean:
 	echo 'run  docker volume rm $(docker volume ls -q)'
 cluster-up:
-	sudo docker compose -f ./Cluster/docker-compose.yml up -d pg1 cadvisor node-exporter sonet
+	sudo mkdir -p /tmp/data-pg1
+	sudo mkdir -p /tmp/data-pg2
+	sudo mkdir -p /tmp/data-pg3
+	sudo cp Cluster/Postgresql1.conf /tmp/data-pg1/postgresql.conf
+	sudo cp Cluster/pg_hba.conf /tmp/data-pg1/pg_hba.conf
+	sudo cp db/user.csv.gz /tmp/data-pg1/user.csv.gz
+	sudo docker compose -f ./Cluster/docker-compose.yml up -d pg1
 	sleep 5
-	sudo docker cp Cluster/pg_hba.conf pg1:/var/lib/postgresql/data/pg_hba.conf
-	sudo docker cp Cluster/Postgresql1.conf pg1:/var/lib/postgresql/data/postgresql.conf
-	sudo docker compose -f ./Cluster/docker-compose.yml restart pg1
-#	sudo docker compose -f ./Cluster/docker-compose.yml stop pg2
 	sudo docker exec pg1 mkdir -p /pgslave
 	sudo docker exec -e PGPASSWORD='pass' pg1 pg_basebackup -h pg1 -D /pgslave -U replicator -v -P --wal-method=stream
 	sudo docker cp pg1:/pgslave /tmp/pgslave
@@ -41,11 +43,18 @@ cluster-up:
 	sudo cp Cluster/pg_hba.conf /tmp/pgslave/pg_hba.conf
 	sudo cp Cluster/standby.signal /tmp/pgslave/standby.signal
 	sudo docker compose -f ./Cluster/docker-compose.yml up -d pg2
+	sudo docker compose -f ./Cluster/docker-compose.yml up -d cadvisor node-exporter sonet
 cluster-down:
 	sudo docker compose -f ./Cluster/docker-compose.yml down
 cluster-drop:
 	sudo docker compose -f ./Cluster/docker-compose.yml down -v
-	sudo rm -r /tmp/pgslave
+	sudo rm -r /tmp/data-pg1
+	sudo rm -r /tmp/data-pg2
+	sudo rm -r /tmp/data-pg3
+cluster-import:
+	sudo docker cp db/user.csv.gz pg1:/user.csv.gz
+	sudo docker exec pg1 psql -d cluster -U user -c "copy public.user from program 'unzip -p /tmp/user.csv.gz'"
+	sudo docker exec pg1 rm /user.csv.gz
 psql1:
 	sudo docker exec -ti pg1 psql -d cluster -U user
 psql2:
