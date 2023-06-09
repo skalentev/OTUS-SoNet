@@ -18,7 +18,7 @@ services:
   pg2:
     image: postgres:14
     container_name: pg2
-    restart: always
+    restart: unless-stopped
     volumes:
       - /tmp/data_pg2:/var/lib/postgresql/data
       ##- ./Postgresql2.conf:/etc/postgresql.conf
@@ -35,7 +35,7 @@ services:
   pg3:
     image: postgres:14
     container_name: pg3
-    restart: always
+    restart: unless-stopped
     volumes:
       - /tmp/data_pg3:/var/lib/postgresql/data
       ##- ./Postgresql3.conf:/var/lib/postgresql/data/postgresql.conf
