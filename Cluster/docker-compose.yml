@@ -3,9 +3,9 @@ services:
   pg1:
     image: postgres:14
     container_name: pg1
-    restart: always
+    restart: unless-stopped
     volumes:
-      - data_pg1:/var/lib/postgresql/data
+      - /tmp/data_pg1:/var/lib/postgresql/data
       ##- ./Postgresql1.conf:/var/lib/postgresql/data/postgresql.conf:ro
       ##- ./pg_hba.conf:/var/lib/postgresql/data/pg_hba.conf:ro
       - ./initdb.sql:/docker-entrypoint-initdb.d/1-init.sql:ro
