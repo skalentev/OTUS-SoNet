@@ -23,11 +23,11 @@ cluster-clean:
 	echo 'run  docker volume rm $(docker volume ls -q)'
 cluster-upmaster:
 #	mkdir -p /tmp/data-pg1
-	sudo docker compose -f ./Cluster/docker-compose.yml create pg1
+	sudo docker compose -f ./Cluster/docker-compose.yml up -d pg1
 	sudo docker cp Cluster/Postgresql1.conf pg1:/var/lib/postgresql/data/postgresql.conf
 	sudo docker cp Cluster/pg_hba.conf pg1:/var/lib/postgresql/data/pg_hba.conf
 #	sudo cp db/user.csv.gz /tmp/data-pg1/user.csv.gz
-	sudo docker compose -f ./Cluster/docker-compose.yml run -d pg1
+	sudo docker compose -f ./Cluster/docker-compose.yml restart pg1
 	sudo docker compose -f ./Cluster/docker-compose.yml up -d cadvisor node-exporter sonet
 cluster-import:
 	sudo docker cp db/user.csv.gz pg1:/var/lib/postgresql/data/user.csv.gz
