@@ -35,17 +35,17 @@ cluster-import:
 	sudo docker exec pg1 psql -d cluster -U user -c "copy public.user from program 'gzip -d -c /var/lib/postgresql/data/user.csv.gz' (FORMAT CSV, HEADER);"
 	sudo docker exec pg1 rm /var/lib/postgresql/data/user.csv.gz
 cluster-upslave:
-	sudo mkdir -p /tmp/data_pg2
-	sudo mkdir -p /tmp/data_pg3
+	sudo rm -rf /tmp/data_pg2
+	sudo rm -rf /tmp/data_pg3
 	sudo docker exec pg1 rm -rf /pgslave
 	sudo docker exec pg1 mkdir -p /pgslave;
 	sudo docker exec -e PGPASSWORD='pass' pg1 pg_basebackup -h pg1 -D /pgslave -U replicator -v -P --wal-method=stream
 	sudo docker cp pg1:/pgslave /tmp/pgslave
-	sudo cp -r /tmp/pgslave /tmp/data_pg2
+	sudo cp -r /tmp/pgslave/ /tmp/data_pg2/
 	sudo cp Cluster/Postgresql2.conf /tmp/data_pg2/postgresql.conf
 	sudo cp Cluster/pg_hba.conf /tmp/data_pg2/pg_hba.conf
 	sudo cp Cluster/standby.signal /tmp/data_pg2/standby.signal
-	sudo cp -r /tmp/pgslave /tmp/data_pg3
+	sudo cp -r /tmp/pgslave/ /tmp/data_pg3/
 	sudo cp Cluster/Postgresql3.conf /tmp/data_pg3/postgresql.conf
 	sudo cp Cluster/pg_hba.conf /tmp/data_pg3/pg_hba.conf
 	sudo cp Cluster/standby.signal /tmp/data_pg3/standby.signal
