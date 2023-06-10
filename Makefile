@@ -22,14 +22,15 @@ clean:
 cluster-clean:
 	echo 'run  docker volume rm $(docker volume ls -q)'
 cluster-upmaster:
-#	mkdir -p /tmp/data-pg1
 	sudo docker compose -f ./Cluster/docker-compose.yml up -d pg1
 	sleep 5
 	sudo docker cp Cluster/Postgresql1.conf pg1:/var/lib/postgresql/data/postgresql.conf
 	sudo docker cp Cluster/pg_hba.conf pg1:/var/lib/postgresql/data/pg_hba.conf
-#	sudo cp db/user.csv.gz /tmp/data-pg1/user.csv.gz
 	sudo docker compose -f ./Cluster/docker-compose.yml restart pg1
 	sudo docker compose -f ./Cluster/docker-compose.yml up -d cadvisor node-exporter sonet
+cluster-setsync:
+	sudo docker cp Cluster/Postgresql1_any.conf pg1:/var/lib/postgresql/data/postgresql.conf
+	sudo docker compose -f ./Cluster/docker-compose.yml restart pg1
 cluster-import:
 	sudo docker cp db/user.csv.gz pg1:/var/lib/postgresql/data/user.csv.gz
 	sudo docker exec pg1 psql -d cluster -U user -c "copy public.user from program 'gzip -d -c /var/lib/postgresql/data/user.csv.gz' (FORMAT CSV, HEADER);"
@@ -50,6 +51,9 @@ cluster-upslave:
 	sudo cp Cluster/pg_hba.conf /tmp/data_pg3/pg_hba.conf
 	sudo cp Cluster/standby.signal /tmp/data_pg3/standby.signal
 	sudo docker compose -f ./Cluster/docker-compose.yml up -d pg2 pg3
+cluster-downslave:
+	sudo docker stop pg2 pg3
+	sudo docker container prune -f
 cluster-update:
 	git pull --no-edit
 	sudo docker build --no-cache -t sonet .
