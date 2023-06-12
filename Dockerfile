@@ -9,7 +9,7 @@ RUN go mod download
 COPY internal/controllers ./internal/controllers/
 COPY internal/middlewares ./internal/middlewares/
 COPY internal/models ./internal/models/
-COPY routes ./internal/routes/
+COPY internal/routes ./internal/routes/
 COPY internal/utils ./internal/utils/
 COPY cmd/otus-sonet/*.go ./
 RUN CGO_ENABLED=0 GOOS=linux go build -o main .

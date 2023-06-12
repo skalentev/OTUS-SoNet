@@ -5,7 +5,7 @@ import (
 	"github.com/gin-gonic/gin"
 	"os"
 	models2 "otus-sonet/internal/models"
-	"otus-sonet/routes"
+	"otus-sonet/internal/routes"
 )
 
 func main() {
