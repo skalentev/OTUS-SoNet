@@ -51,6 +51,8 @@ cluster-upslave:
 	sudo cp Cluster/pg_hba.conf /tmp/data_pg3/pg_hba.conf
 	sudo cp Cluster/standby.signal /tmp/data_pg3/standby.signal
 	sudo docker compose -f ./Cluster/docker-compose.yml up -d pg2 pg3
+cluster-upredis:
+	sudo docker compose -f ./Cluster/docker-compose.yml up -d redis
 cluster-downslave:
 	sudo docker stop pg2 pg3
 	sudo docker container prune -f
@@ -68,6 +70,7 @@ cluster-drop:
 	sudo rm -r /tmp/data_pg2 || true
 	sudo rm -r /tmp/data_pg3 || true
 	sudo rm -r /tmp/pgslave || true
+	sudo rm -r /tmp/redis || true
 psql1:
 	sudo docker exec -ti pg1 psql -d cluster -U user
 psql2:
