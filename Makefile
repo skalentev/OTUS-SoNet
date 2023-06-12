@@ -71,6 +71,8 @@ cluster-drop:
 	sudo rm -r /tmp/data_pg3 || true
 	sudo rm -r /tmp/pgslave || true
 	sudo rm -r /tmp/redis || true
+redis:
+	sudo docker exec -it redis sh
 psql1:
 	sudo docker exec -ti pg1 psql -d cluster -U user
 psql2:
