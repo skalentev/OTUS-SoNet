@@ -14,7 +14,7 @@ COPY middlewares ./middlewares/
 COPY models ./models/
 COPY routes ./routes/
 COPY utils ./utils/
-COPY *.go ./
+COPY cmd/otus-sonet/*.go ./
 
 RUN CGO_ENABLED=0 GOOS=linux go build -o main .
 
