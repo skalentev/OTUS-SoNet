@@ -6,11 +6,11 @@ FROM golang:1.19 AS build-stage
 WORKDIR /app
 COPY go.mod go.sum ./
 RUN go mod download
-COPY controllers ./controllers/
-COPY middlewares ./middlewares/
-COPY models ./models/
+COPY internal/controllers ./controllers/
+COPY internal/middlewares ./middlewares/
+COPY internal/models ./models/
 COPY routes ./routes/
-COPY utils ./utils/
+COPY internal/utils ./utils/
 COPY cmd/otus-sonet/*.go ./
 RUN CGO_ENABLED=0 GOOS=linux go build -o main .
 

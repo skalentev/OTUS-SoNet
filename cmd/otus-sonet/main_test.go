@@ -5,7 +5,7 @@ import (
 	"github.com/stretchr/testify/assert"
 	"net/http"
 	"net/http/httptest"
-	"otus-sonet/controllers"
+	"otus-sonet/internal/controllers"
 	"testing"
 )
 

@@ -3,8 +3,8 @@ package controllers
 import (
 	"github.com/gin-gonic/gin"
 	"github.com/google/uuid"
-	"otus-sonet/models"
-	"otus-sonet/utils"
+	"otus-sonet/internal/models"
+	"otus-sonet/internal/utils"
 )
 
 func AuthTest(c *gin.Context) {

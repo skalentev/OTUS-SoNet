@@ -1,7 +1,7 @@
 package models
 
 import (
-	"otus-sonet/utils"
+	"otus-sonet/internal/utils"
 	"time"
 )
 

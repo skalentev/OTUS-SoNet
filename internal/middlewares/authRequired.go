@@ -5,8 +5,8 @@ import (
 	"fmt"
 	"github.com/google/uuid"
 	"net/http"
-	"otus-sonet/models"
-	"otus-sonet/utils"
+	models2 "otus-sonet/internal/models"
+	"otus-sonet/internal/utils"
 	"strings"
 	"time"
 
@@ -38,16 +38,16 @@ func AuthRequired() gin.HandlerFunc {
 			return
 		}
 
-		var user models.User
+		var user models2.User
 
 		var query string
-		switch models.DB.Driver {
+		switch models2.DB.Driver {
 		case "mysql":
 			query = "SELECT u.id, u.first_name, u.second_name, u.birthdate, u.biography, u.city from session s, user u WHERE s.token = ? AND s.token_till>? AND u.id=s.user_id LIMIT 1"
 		default:
 			query = "SELECT u.id, u.first_name, u.second_name, u.birthdate, u.biography, u.city from public.session s, public.user u WHERE s.token = $1 AND s.token_till>$2 AND u.id=s.user_id limit 1"
 		}
-		if err := models.DB.DB.QueryRow(query,
+		if err := models2.DB.DB.QueryRow(query,
 			headerParts[1], time.Now()).Scan(&user.Id, &user.FirstName, &user.SecondName, &user.Birthdate, &user.Biography, &user.City); err != nil {
 			if err == sql.ErrNoRows {
 				c.JSON(404, gin.H{})
@@ -58,7 +58,7 @@ func AuthRequired() gin.HandlerFunc {
 				return
 			}
 		}
-		models.CalcUserAge(&user)
+		models2.CalcUserAge(&user)
 		c.Set("user", user)
 		c.Next()
 	}

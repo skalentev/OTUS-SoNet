@@ -3,8 +3,8 @@ package controllers
 import (
 	"fmt"
 	"github.com/gin-gonic/gin"
-	"otus-sonet/models"
-	"otus-sonet/utils"
+	models2 "otus-sonet/internal/models"
+	"otus-sonet/internal/utils"
 	"time"
 )
 
@@ -26,13 +26,13 @@ func UserSearch(c *gin.Context) {
 
 	start := time.Now()
 	var query string
-	switch models.DBRO.Driver {
+	switch models2.DBRO.Driver {
 	case "mysql":
 		query = "SELECT u.id, u.first_name, u.second_name, u.birthdate, COALESCE(u.biography,'-') as biography, u.city from user u WHERE u.first_name LIKE ? AND u.second_name LIKE ? ORDER BY u.id "
 	default:
 		query = "SELECT u.id, u.first_name, u.second_name, u.birthdate, COALESCE(u.biography,'-') as biography, u.city from public.user u WHERE u.first_name LIKE $1 AND u.second_name LIKE $2 ORDER BY u.id"
 	}
-	rows, err := models.DBRO.DB.Query(query,
+	rows, err := models2.DBRO.DB.Query(query,
 		firstName+"%", lastName+"%")
 	if err != nil {
 		utils.Code500(c, "Query error", -7)
@@ -46,22 +46,22 @@ func UserSearch(c *gin.Context) {
 			return
 		}
 	}()
-	models.Prom.DbTimeSummary.WithLabelValues("select", "userSearch", "query").Observe(float64(time.Since(start).Milliseconds()))
-	models.Prom.DbTimeGauge.WithLabelValues("select", "userSearch", "query").Set(float64(time.Since(start).Milliseconds()))
+	models2.Prom.DbTimeSummary.WithLabelValues("select", "userSearch", "query").Observe(float64(time.Since(start).Milliseconds()))
+	models2.Prom.DbTimeGauge.WithLabelValues("select", "userSearch", "query").Set(float64(time.Since(start).Milliseconds()))
 
-	var users []models.User
+	var users []models2.User
 
 	for rows.Next() {
-		var user models.User
+		var user models2.User
 		if err := rows.Scan(&user.Id, &user.FirstName, &user.SecondName, &user.Birthdate, &user.Biography, &user.City); err != nil {
 			utils.Code500(c, "get data error", -8)
 			fmt.Println(err)
 			return
 		}
-		models.CalcUserAge(&user)
+		models2.CalcUserAge(&user)
 		users = append(users, user)
 	}
-	models.Prom.DbTimeSummary.WithLabelValues("select", "userSearch", "rows").Observe(float64(time.Since(start).Milliseconds()))
+	models2.Prom.DbTimeSummary.WithLabelValues("select", "userSearch", "rows").Observe(float64(time.Since(start).Milliseconds()))
 	if err = rows.Err(); err != nil {
 		utils.Code500(c, "Metrics error", -9)
 		return

@@ -2,28 +2,28 @@ package routes
 
 import (
 	"github.com/gin-gonic/gin"
-	"otus-sonet/controllers"
-	"otus-sonet/middlewares"
+	controllers2 "otus-sonet/internal/controllers"
+	middlewares2 "otus-sonet/internal/middlewares"
 )
 
 func Route(r *gin.Engine) {
 
-	r.Use(middlewares.RequestID())
+	r.Use(middlewares2.RequestID())
 
-	r.POST("/login", controllers.Login)
-	r.POST("/user/register", controllers.UserRegister)
-	r.GET("/user/get/:id", controllers.UserGetId)
-	r.GET("/user/search", controllers.UserSearch)
+	r.POST("/login", controllers2.Login)
+	r.POST("/user/register", controllers2.UserRegister)
+	r.GET("/user/get/:id", controllers2.UserGetId)
+	r.GET("/user/search", controllers2.UserSearch)
 
-	r.GET("/health", controllers.Health)
+	r.GET("/health", controllers2.Health)
 	//	r.GET("/metrics", controllers.PrometheusHandler())
 	authorized := r.Group("/test")
-	authorized.Use(middlewares.AuthRequired())
+	authorized.Use(middlewares2.AuthRequired())
 	{
-		authorized.GET("/test", controllers.AuthTest)
+		authorized.GET("/test", controllers2.AuthTest)
 	}
 
-	r.NoMethod(controllers.NoRoute)
-	r.NoRoute(controllers.NoRoute)
+	r.NoMethod(controllers2.NoRoute)
+	r.NoRoute(controllers2.NoRoute)
 
 }

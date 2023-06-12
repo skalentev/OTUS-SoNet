@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"github.com/gin-gonic/gin"
 	"os"
-	"otus-sonet/models"
+	models2 "otus-sonet/internal/models"
 	"otus-sonet/routes"
 )
 
@@ -17,24 +17,24 @@ func main() {
 		panic(err)
 	}
 
-	models.Prom = models.NewPrometheus("http")
-	models.Prom.Use(r)
+	models2.Prom = models2.NewPrometheus("http")
+	models2.Prom.Use(r)
 
 	// Init Master DB
-	if err := models.DB.Init(models.GetDBConfig("DB_")); err != nil {
+	if err := models2.DB.Init(models2.GetDBConfig("DB_")); err != nil {
 		panic(err)
 	}
 	// Init ReadOnly DB
-	if err := models.DBRO.Init(models.GetDBConfig("RODB_")); err != nil {
+	if err := models2.DBRO.Init(models2.GetDBConfig("RODB_")); err != nil {
 		fmt.Println("DB slave error, using master fo RO requests. error:", err)
-		models.DBRO = models.DB
+		models2.DBRO = models2.DB
 	}
 
 	defer func() {
-		if err := models.DB.Close(); err != nil {
+		if err := models2.DB.Close(); err != nil {
 			fmt.Println("DB close error")
 		}
-		if err := models.DBRO.Close(); err != nil {
+		if err := models2.DBRO.Close(); err != nil {
 			fmt.Println("DBRO close error")
 		}
 	}()
