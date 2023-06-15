@@ -23,7 +23,7 @@ func Route(r *gin.Engine) {
 	{
 		authorized.PUT("/friend/set/:user_id", controllers.FriendSet)
 		authorized.DELETE("/friend/delete/:user_id", controllers.FriendDelete)
-		authorized.PUT("/post/delete/:id", controllers.PostDelete)
+		authorized.DELETE("/post/delete/:id", controllers.PostDelete)
 		authorized.PUT("/post/update", controllers.PostUpdate)
 		authorized.POST("/post/create", controllers.PostCreate)
 

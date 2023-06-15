@@ -50,7 +50,7 @@ func AuthRequired() gin.HandlerFunc {
 		if err := models2.DB.DB.QueryRow(query,
 			headerParts[1], time.Now()).Scan(&user.Id, &user.FirstName, &user.SecondName, &user.Birthdate, &user.Biography, &user.City); err != nil {
 			if err == sql.ErrNoRows {
-				c.JSON(404, gin.H{})
+				c.JSON(401, gin.H{})
 				return
 			} else {
 				c.JSON(500, gin.H{"message": "service unavailable", "request_id": utils.GetRequestId(c), "code": -1})

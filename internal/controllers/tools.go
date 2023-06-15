@@ -8,6 +8,7 @@ import (
 	"otus-sonet/internal/utils"
 )
 
+// GetAuthUser Берет пользователя из результата авторизации текущего сонтекста
 func GetAuthUser(c *gin.Context) (models.User, error) {
 
 	val, exists := c.Get("user")

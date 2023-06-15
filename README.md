@@ -10,6 +10,10 @@
 * /friend/set/{user_id}
 * /friend/delete/{user_id}
 * /friend/get/{user_id}
+* /post/get/{id}
+* /post/delete/{id}
+* /post/update
+* /post/create
 * /test/test
 * /health
 * /metrics
