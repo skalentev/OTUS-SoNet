@@ -113,8 +113,8 @@ func (d *Db) Init(cfg DBConfig) error {
 			(
 				token VARCHAR(64) NOT NULL,
 				user_id VARCHAR(64) NOT NULL,
-				created_at timestamp,
-				updated_at timestamp,
+				created_at timestamp DEFAULT CURRENT_TIMESTAMP,
+				updated_at timestamp DEFAULT CURRENT_TIMESTAMP,
 				deleted_at timestamp,
 				token_till timestamp
 			);
@@ -146,8 +146,8 @@ func (d *Db) Init(cfg DBConfig) error {
 				id VARCHAR(64) NOT NULL,
 				user_id VARCHAR(64) NOT NULL,
 				text TEXT,
-				created_at timestamp,
-				updated_at timestamp,
+				created_at timestamp DEFAULT CURRENT_TIMESTAMP,
+				updated_at timestamp DEFAULT CURRENT_TIMESTAMP,
 				deleted_at timestamp
 			);
 			`
@@ -177,8 +177,8 @@ func (d *Db) Init(cfg DBConfig) error {
 				id VARCHAR(64) NOT NULL,
 				user_id VARCHAR(64) NOT NULL,
 				friend_id VARCHAR(64) NOT NULL,
-				created_at timestamp,
-				updated_at timestamp,
+				created_at timestamp DEFAULT CURRENT_TIMESTAMP,
+				updated_at timestamp DEFAULT CURRENT_TIMESTAMP,
 				deleted_at timestamp
 			);
 			`

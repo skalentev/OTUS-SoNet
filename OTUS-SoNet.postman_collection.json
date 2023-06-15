@@ -46,7 +46,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n    \"id\": \"{{last_user_id}}\",\r\n    \"password\": \"Секретная строка\"\r\n}",
+					"raw": "{\r\n    \"id\": \"{{last_user_id}}\",\r\n    \"password\": \"password\"\r\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -54,11 +54,11 @@
 					}
 				},
 				"url": {
-					"raw": "localhost:8080/login",
+					"raw": "{{host}}:{{port}}/login",
 					"host": [
-						"localhost"
+						"{{host}}"
 					],
-					"port": "8080",
+					"port": "{{port}}",
 					"path": [
 						"login"
 					]
@@ -86,6 +86,8 @@
 							"    pm.response.to.not.have.jsonBody(\"error\");\r",
 							"});\r",
 							"const responseJson = pm.response.json();\r",
+							"\r",
+							"pm.collectionVariables.set(\"prev_user_id\", pm.collectionVariables.get(\"last_user_id\"));\r",
 							"pm.collectionVariables.set(\"last_user_id\", responseJson.user_id);"
 						],
 						"type": "text/javascript"
@@ -97,7 +99,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n  \"first_name\": \"{{$randomFirstName}}\",\r\n  \"second_name\": \"{{$randomWord}}\",\r\n  \"birthdate\": \"2000-01-01\",\r\n  \"biography\": \"{{$randomJobTitle}}\",\r\n  \"city\": \"{{$randomCity}}\",\r\n  \"password\": \"Секретная строка\"\r\n}",
+					"raw": "{\r\n  \"first_name\": \"{{$randomFirstName}}\",\r\n  \"second_name\": \"{{$randomWord}}\",\r\n  \"birthdate\": \"2000-01-01\",\r\n  \"biography\": \"{{$randomJobTitle}}\",\r\n  \"city\": \"{{$randomCity}}\",\r\n  \"password\": \"password\"\r\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -105,11 +107,11 @@
 					}
 				},
 				"url": {
-					"raw": "localhost:8080/user/register",
+					"raw": "{{host}}:{{port}}/user/register",
 					"host": [
-						"localhost"
+						"{{host}}"
 					],
-					"port": "8080",
+					"port": "{{port}}",
 					"path": [
 						"user",
 						"register"
@@ -170,12 +172,12 @@
 					}
 				],
 				"url": {
-					"raw": "http://localhost:8080/test/test",
+					"raw": "http://{{host}}:{{port}}/test/test",
 					"protocol": "http",
 					"host": [
-						"localhost"
+						"{{host}}"
 					],
-					"port": "8080",
+					"port": "{{port}}",
 					"path": [
 						"test",
 						"test"
@@ -230,16 +232,642 @@
 					}
 				],
 				"url": {
-					"raw": "http://localhost:8080/user/get/{{last_user_id}}",
+					"raw": "http://{{host}}:{{port}}/user/get/{{last_user_id}}",
 					"protocol": "http",
 					"host": [
-						"localhost"
+						"{{host}}"
 					],
-					"port": "8080",
+					"port": "{{port}}",
 					"path": [
 						"user",
 						"get",
 						"{{last_user_id}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "health",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status test\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"    pm.response.to.be.withBody;\r",
+							"    pm.response.to.be.json;\r",
+							"    pm.response.to.not.be.error;\r",
+							"});\r",
+							"pm.test(\"Body test\", function () {\r",
+							"    pm.response.to.be.ok;\r",
+							"    pm.response.to.have.jsonBody(\"status\");\r",
+							"    pm.response.to.not.have.jsonBody(\"error\");\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://{{host}}:{{port}}/health",
+					"protocol": "http",
+					"host": [
+						"{{host}}"
+					],
+					"port": "{{port}}",
+					"path": [
+						"health"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "userSearch",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status test\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"    pm.response.to.be.withBody;\r",
+							"    pm.response.to.be.json;\r",
+							"    pm.response.to.not.be.error;\r",
+							"});\r",
+							"pm.test(\"Body test\", function () {\r",
+							"    pm.response.to.be.ok;\r",
+							"    pm.response.to.not.have.jsonBody(\"error\");\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://{{host}}:{{port}}/user/search?first_name=И&last_name=И",
+					"protocol": "http",
+					"host": [
+						"{{host}}"
+					],
+					"port": "{{port}}",
+					"path": [
+						"user",
+						"search"
+					],
+					"query": [
+						{
+							"key": "first_name",
+							"value": "И"
+						},
+						{
+							"key": "last_name",
+							"value": "И"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "friendSet",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							""
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status test\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"    pm.response.to.not.be.error;\r",
+							"});\r",
+							"pm.test(\"Body test\", function () {\r",
+							"    pm.response.to.be.ok;\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "PUT",
+				"header": [
+					{
+						"key": "X-Request-Id",
+						"value": "e04dee76-819b-4377-b11a-3a598bf6bf93",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "http://{{host}}:{{port}}/friend/set/{{prev_user_id}}",
+					"protocol": "http",
+					"host": [
+						"{{host}}"
+					],
+					"port": "{{port}}",
+					"path": [
+						"friend",
+						"set",
+						"{{prev_user_id}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "friendDelete",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							""
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status test\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"    pm.response.to.be.withBody;\r",
+							"    pm.response.to.be.json;\r",
+							"    pm.response.to.not.be.error;\r",
+							"});\r",
+							"pm.test(\"Body test\", function () {\r",
+							"    pm.response.to.be.ok;\r",
+							"    pm.response.to.have.jsonBody(\"user.id\");\r",
+							"    pm.response.to.not.have.jsonBody(\"error\");\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "DELETE",
+				"header": [
+					{
+						"key": "X-Request-Id",
+						"value": "e04dee76-819b-4377-b11a-3a598bf6bf93",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "http://{{host}}:{{port}}/friend/delete/{{prev_user_id}}",
+					"protocol": "http",
+					"host": [
+						"{{host}}"
+					],
+					"port": "{{port}}",
+					"path": [
+						"friend",
+						"delete",
+						"{{prev_user_id}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "friendGet",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							""
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status test\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"    pm.response.to.be.withBody;\r",
+							"    pm.response.to.be.json;\r",
+							"    pm.response.to.not.be.error;\r",
+							"});\r",
+							"pm.test(\"Body test\", function () {\r",
+							"    pm.response.to.be.ok;\r",
+							"    pm.response.to.not.have.jsonBody(\"error\");\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [
+					{
+						"key": "X-Request-Id",
+						"value": "e04dee76-819b-4377-b11a-3a598bf6bf93",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "http://{{host}}:{{port}}/friend/get/{{last_user_id}}",
+					"protocol": "http",
+					"host": [
+						"{{host}}"
+					],
+					"port": "{{port}}",
+					"path": [
+						"friend",
+						"get",
+						"{{last_user_id}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "friendSet2",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							""
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status test\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"    pm.response.to.not.be.error;\r",
+							"});\r",
+							"pm.test(\"Body test\", function () {\r",
+							"    pm.response.to.be.ok;\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "PUT",
+				"header": [
+					{
+						"key": "X-Request-Id",
+						"value": "e04dee76-819b-4377-b11a-3a598bf6bf93",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "http://{{host}}:{{port}}/friend/set/{{prev_user_id}}",
+					"protocol": "http",
+					"host": [
+						"{{host}}"
+					],
+					"port": "{{port}}",
+					"path": [
+						"friend",
+						"set",
+						"{{prev_user_id}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "postCreate",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							""
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status test\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"    pm.response.to.be.withBody;\r",
+							"    pm.response.to.be.json;\r",
+							"    pm.response.to.not.be.error;\r",
+							"});\r",
+							"pm.test(\"Body test\", function () {\r",
+							"    pm.response.to.be.ok;\r",
+							"    pm.response.to.have.jsonBody(\"id\");\r",
+							"    pm.response.to.not.have.jsonBody(\"error\");\r",
+							"});\r",
+							"const responseJson = pm.response.json();\r",
+							"pm.collectionVariables.set(\"last_post_id\", responseJson.id);"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [
+					{
+						"key": "X-Request-Id",
+						"value": "e04dee76-819b-4377-b11a-3a598bf6bf93",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"text\": \"{{$randomCatchPhrase}}\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://{{host}}:{{port}}/post/create",
+					"protocol": "http",
+					"host": [
+						"{{host}}"
+					],
+					"port": "{{port}}",
+					"path": [
+						"post",
+						"create"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "postGetId",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							""
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status test\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"    pm.response.to.be.withBody;\r",
+							"    pm.response.to.be.json;\r",
+							"    pm.response.to.not.be.error;\r",
+							"});\r",
+							"pm.test(\"Body test\", function () {\r",
+							"    pm.response.to.be.ok;\r",
+							"    pm.response.to.have.jsonBody(\"id\");\r",
+							"    pm.response.to.not.have.jsonBody(\"error\");\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "GET",
+				"header": [
+					{
+						"key": "X-Request-Id",
+						"value": "e04dee76-819b-4377-b11a-3a598bf6bf93",
+						"type": "text",
+						"disabled": true
+					}
+				],
+				"url": {
+					"raw": "http://{{host}}:{{port}}/post/get/{{last_post_id}}",
+					"protocol": "http",
+					"host": [
+						"{{host}}"
+					],
+					"port": "{{port}}",
+					"path": [
+						"post",
+						"get",
+						"{{last_post_id}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "postDelete",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							""
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status test\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"    pm.response.to.be.withBody;\r",
+							"    pm.response.to.be.json;\r",
+							"    pm.response.to.not.be.error;\r",
+							"});\r",
+							"pm.test(\"Body test\", function () {\r",
+							"    pm.response.to.be.ok;\r",
+							"    pm.response.to.have.jsonBody(\"id\");\r",
+							"    pm.response.to.not.have.jsonBody(\"error\");\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "DELETE",
+				"header": [
+					{
+						"key": "X-Request-Id",
+						"value": "e04dee76-819b-4377-b11a-3a598bf6bf93",
+						"type": "text",
+						"disabled": true
+					}
+				],
+				"url": {
+					"raw": "http://{{host}}:{{port}}/post/delete/{{last_post_id}}",
+					"protocol": "http",
+					"host": [
+						"{{host}}"
+					],
+					"port": "{{port}}",
+					"path": [
+						"post",
+						"delete",
+						"{{last_post_id}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "postUpdate",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							""
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status test\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"    pm.response.to.not.be.error;\r",
+							"});\r",
+							"pm.test(\"Body test\", function () {\r",
+							"    pm.response.to.be.ok;\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "PUT",
+				"header": [
+					{
+						"key": "X-Request-Id",
+						"value": "e04dee76-819b-4377-b11a-3a598bf6bf93",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"id\": \"{{last_post_id}}\",\r\n    \"text\": \"new phrase\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://{{host}}:{{port}}/post/update",
+					"protocol": "http",
+					"host": [
+						"{{host}}"
+					],
+					"port": "{{port}}",
+					"path": [
+						"post",
+						"update"
 					]
 				}
 			},
@@ -275,6 +903,26 @@
 		{
 			"key": "last_user_id",
 			"value": ""
+		},
+		{
+			"key": "host",
+			"value": "192.168.88.206",
+			"type": "string"
+		},
+		{
+			"key": "port",
+			"value": "8080",
+			"type": "string"
+		},
+		{
+			"key": "prev_user_id",
+			"value": "",
+			"type": "string"
+		},
+		{
+			"key": "last_post_id",
+			"value": "",
+			"type": "string"
 		}
 	]
 }
