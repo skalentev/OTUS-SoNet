@@ -26,13 +26,13 @@ func UserSearch(c *gin.Context) {
 
 	start := time.Now()
 	var query string
-	switch models2.DBRO.Driver {
+	switch models2.DBSlave.Driver {
 	case "mysql":
 		query = "SELECT u.id, u.first_name, u.second_name, u.birthdate, COALESCE(u.biography,'-') as biography, u.city from user u WHERE u.first_name LIKE ? AND u.second_name LIKE ? ORDER BY u.id "
 	default:
 		query = "SELECT u.id, u.first_name, u.second_name, u.birthdate, COALESCE(u.biography,'-') as biography, u.city from public.user u WHERE u.first_name LIKE $1 AND u.second_name LIKE $2 ORDER BY u.id"
 	}
-	rows, err := models2.DBRO.DB.Query(query,
+	rows, err := models2.DBSlave.DB.Query(query,
 		firstName+"%", lastName+"%")
 	if err != nil {
 		utils.Code500(c, "Query error", -7)

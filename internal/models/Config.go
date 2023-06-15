@@ -17,7 +17,6 @@ type DBConfig struct {
 }
 
 func GetDBConfig(pref string) DBConfig {
-
 	err := godotenv.Load()
 	if err != nil {
 		if os.Getenv("DB_NAME") == "" {

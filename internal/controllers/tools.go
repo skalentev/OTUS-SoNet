@@ -1,23 +1,34 @@
 package controllers
 
 import (
+	"errors"
 	"github.com/gin-gonic/gin"
 	"github.com/google/uuid"
 	"otus-sonet/internal/models"
 	"otus-sonet/internal/utils"
 )
 
-func AuthTest(c *gin.Context) {
+func GetAuthUser(c *gin.Context) (models.User, error) {
 
 	val, exists := c.Get("user")
 	if !exists {
-		c.AbortWithStatus(401)
-		return
+		return models.User{}, errors.New("no auth key")
 	}
 
 	var user models.User = val.(models.User)
 
 	if _, err := uuid.Parse(user.Id); err != nil {
+		c.AbortWithStatus(401)
+		return models.User{}, errors.New("no auth uuid")
+	}
+
+	return user, nil
+}
+
+func AuthTest(c *gin.Context) {
+
+	user, err := GetAuthUser(c)
+	if err != nil {
 		c.AbortWithStatus(401)
 		return
 	}

@@ -7,11 +7,18 @@
 * /user/register
 * /user/get/{id}
 * /user/search
+* /friend/set/{user_id}
+* /friend/delete/{user_id}
 * /test/test
 * /health
 * /metrics
 
 Используйте [POSTMAN коллекцию](https://github.com/skalentev/OTUS-SoNet/blob/main/OTUS-SoNet.postman_collection.json) для тестирования
+
+
+## Схема приема сообщений
+![кеширование запросов](doc/img/cashe.png)
+
 
 ## Требования к ПО для сборки и тестирования
 - Go v1.18 or higher

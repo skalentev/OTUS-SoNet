@@ -21,7 +21,7 @@ type Db struct {
 }
 
 var DB = &Db{}
-var DBRO = &Db{}
+var DBSlave = &Db{}
 
 func (d *Db) Init(cfg DBConfig) error {
 	var (
@@ -91,7 +91,7 @@ func (d *Db) Init(cfg DBConfig) error {
 
 	_, err = d.DB.Exec(d.lastQuery)
 	if err != nil {
-		fmt.Println(err)
+		fmt.Println("Table user:", err)
 	}
 
 	switch d.Driver {
@@ -123,7 +123,70 @@ func (d *Db) Init(cfg DBConfig) error {
 
 	_, err = d.DB.Exec(d.lastQuery)
 	if err != nil {
-		fmt.Println(err)
+		fmt.Println("Table session:", err)
+	}
+
+	switch d.Driver {
+	case "mysql":
+		d.lastQuery = `
+			CREATE TABLE IF NOT EXISTS post (
+				id VARCHAR(64) NOT NULL PRIMARY KEY,
+				user_id VARCHAR(64) NOT NULL,
+				text TEXT,
+				created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+				updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+				deleted_at TIMESTAMP,
+				FOREIGN KEY (user_id) REFERENCES user(id) ON DELETE CASCADE
+			) ENGINE=InnoDB
+		`
+	default:
+		d.lastQuery = `
+			CREATE TABLE IF NOT EXISTS public.post
+			(
+				id VARCHAR(64) NOT NULL,
+				user_id VARCHAR(64) NOT NULL,
+				text TEXT,
+				created_at timestamp,
+				updated_at timestamp,
+				deleted_at timestamp
+			);
+			`
+	}
+
+	_, err = d.DB.Exec(d.lastQuery)
+	if err != nil {
+		fmt.Println("Table post:", err)
+	}
+
+	switch d.Driver {
+	case "mysql":
+		d.lastQuery = `
+			CREATE TABLE IF NOT EXISTS friend (
+				id VARCHAR(64) NOT NULL PRIMARY KEY,
+				user_id VARCHAR(64) NOT NULL,
+				friend_id VARCHAR(64) NOT NULL,
+				created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+				updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+				deleted_at TIMESTAMP
+			) ENGINE=InnoDB
+		`
+	default:
+		d.lastQuery = `
+			CREATE TABLE IF NOT EXISTS public.friend
+			(
+				id VARCHAR(64) NOT NULL,
+				user_id VARCHAR(64) NOT NULL,
+				friend_id VARCHAR(64) NOT NULL,
+				created_at timestamp,
+				updated_at timestamp,
+				deleted_at timestamp
+			);
+			`
+	}
+
+	_, err = d.DB.Exec(d.lastQuery)
+	if err != nil {
+		fmt.Println("Table friend:", err)
 	}
 
 	return nil
