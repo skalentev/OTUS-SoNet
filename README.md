@@ -9,6 +9,7 @@
 * /user/search
 * /friend/set/{user_id}
 * /friend/delete/{user_id}
+* /friend/get/{user_id}
 * /test/test
 * /health
 * /metrics

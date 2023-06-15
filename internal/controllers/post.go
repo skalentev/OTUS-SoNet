@@ -7,7 +7,7 @@ import (
 	"otus-sonet/internal/utils"
 )
 
-func FriendSet(c *gin.Context) {
+func PostCreate(c *gin.Context) {
 
 	friendId := c.Param("user_id")
 	if friendId == "" {
@@ -33,7 +33,7 @@ func FriendSet(c *gin.Context) {
 	c.AbortWithStatus(200)
 }
 
-func FriendDelete(c *gin.Context) {
+func PostDelete(c *gin.Context) {
 
 	friendId := c.Param("user_id")
 	if friendId == "" {
@@ -59,24 +59,54 @@ func FriendDelete(c *gin.Context) {
 	c.AbortWithStatus(200)
 }
 
-func FriendGet(c *gin.Context) {
+func PostUpdate(c *gin.Context) {
 
-	userId := c.Param("user_id")
-	if userId == "" {
+	friendId := c.Param("user_id")
+	if friendId == "" {
 		c.AbortWithStatus(400)
 		return
 	}
 
-	if _, err := uuid.Parse(userId); err != nil {
+	if _, err := uuid.Parse(friendId); err != nil {
 		c.AbortWithStatus(400)
 		return
 	}
 
-	friends, err := models.Friends.Get(userId)
+	userId, err := GetAuthUser(c)
 	if err != nil {
+		c.AbortWithStatus(401)
+		return
+	}
+
+	if err := models.Friends.Delete(userId.Id, friendId); err != nil {
 		utils.Code500(c, err.Error(), -5)
 		return
 	}
+	c.AbortWithStatus(200)
+}
 
-	c.JSON(200, friends)
+func PostGet(c *gin.Context) {
+
+	friendId := c.Param("user_id")
+	if friendId == "" {
+		c.AbortWithStatus(400)
+		return
+	}
+
+	if _, err := uuid.Parse(friendId); err != nil {
+		c.AbortWithStatus(400)
+		return
+	}
+
+	userId, err := GetAuthUser(c)
+	if err != nil {
+		c.AbortWithStatus(401)
+		return
+	}
+
+	if err := models.Friends.Delete(userId.Id, friendId); err != nil {
+		utils.Code500(c, err.Error(), -5)
+		return
+	}
+	c.AbortWithStatus(200)
 }
